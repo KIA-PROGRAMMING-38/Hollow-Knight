@@ -12,11 +12,7 @@ public class RunState : StateMachineBehaviour
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyUp(KeyCode.LeftArrow))
-        {
-            animator.SetBool("isRun", false);
-        }
-
+       
     }
 
 

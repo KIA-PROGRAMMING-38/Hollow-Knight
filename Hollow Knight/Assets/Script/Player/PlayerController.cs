@@ -14,14 +14,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] LayerMask islayer;
 
     internal bool isGround;
-    internal bool isJumping;
+    private bool isJumping;
     private float jumpTimeCounter;
-    internal float jumpTime;
-    internal int jumpCount;
+    private float jumpTime;
+    private int jumpCount;
     Animator anim;
-    Rigidbody2D rigid;
+    internal Rigidbody2D rigid;
     SpriteRenderer spriteRenderer;
     Collider2D col;
+    
     
     void Start()
     {
@@ -53,13 +54,8 @@ public class PlayerController : MonoBehaviour
         }
         else if (Input.GetKey(KeyCode.LeftArrow))
             rigid.velocity = new Vector2(speed * -1, rigid.velocity.y);
-            
-        
         else if (Input.GetKey(KeyCode.RightArrow))
             rigid.velocity = new Vector2(speed, rigid.velocity.y);
-           
-        
-        
     }
     void Flip()
     {

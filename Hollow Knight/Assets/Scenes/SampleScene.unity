@@ -497,7 +497,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 5b457618e960c2c46aaac0699c5d56a4, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -588,7 +588,7 @@ MonoBehaviour:
   speed: 6
   jumpPower: 15
   pos: {fileID: 254412111}
-  checkRadious: 0.35
+  checkRadious: 0
   islayer:
     serializedVersion: 2
     m_Bits: 8

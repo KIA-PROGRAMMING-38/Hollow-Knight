@@ -12,12 +12,21 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform pos;
     [SerializeField] float checkRadious;
     [SerializeField] LayerMask islayer;
+    private int moveDirection;
 
     internal bool isGround;
     private bool isJumping;
     private float jumpTimeCounter;
     private float jumpTime;
     private int jumpCount;
+
+    private bool skillCoolTime;
+    private bool isDash;
+    private float dashSpeed;
+    private float dashTime;
+    
+    
+    
     Animator anim;
     internal Rigidbody2D rigid;
     SpriteRenderer spriteRenderer;
@@ -32,30 +41,51 @@ public class PlayerController : MonoBehaviour
         col = GetComponent<Collider2D>();
 
         jumpTime = 0.5f;
+        skillCoolTime = true;
+        dashSpeed = 24f;
+        dashTime = 0.2f;
     }
 
     void FixedUpdate()
     {
         Move();
-        Flip();
     }
     void Update()
     {
+        Flip();
         Jump();
-
+        SkillActive();
     }
 
+    // 스킬 활성화
+    private void SkillActive()
+    {
+        if (Input.GetKey(KeyCode.C) && skillCoolTime)
+        {   
+            StartCoroutine(Dash());
+        }
+    }
     void Move()
     {
-        
+        // 대쉬 중 이동을 하지 않는다.
+        if (isDash)
+            return;
         if (Input.GetKey(KeyCode.LeftArrow) && Input.GetKey(KeyCode.RightArrow))
         {
             // 움직이지 않는다.
+            moveDirection = 0;
         }
         else if (Input.GetKey(KeyCode.LeftArrow))
+        {
             rigid.velocity = new Vector2(speed * -1, rigid.velocity.y);
+            moveDirection = -1;
+        }
+
         else if (Input.GetKey(KeyCode.RightArrow))
+        {
             rigid.velocity = new Vector2(speed, rigid.velocity.y);
+            moveDirection = 1;
+        }
     }
     void Flip()
     {
@@ -67,6 +97,10 @@ public class PlayerController : MonoBehaviour
     
     void Jump()
     {
+        // 대쉬 중 점프를 하지 않는다.
+        if (isDash) 
+            return;
+
         // 지면을 확인
         isGround = Physics2D.OverlapCircle(pos.position, checkRadious, islayer);
 
@@ -109,10 +143,35 @@ public class PlayerController : MonoBehaviour
                 isJumping = false;
             }
         }
-
-        
-
     }
 
+    IEnumerator Dash()
+    {
+        // 중력 삭제
+        float originalGravity = rigid.gravityScale;
+        rigid.gravityScale = 0f;
+
+        skillCoolTime = false;
+        isDash = true;
+
+        if(rigid.velocity.x == 0)
+        {
+            if (spriteRenderer.flipX == true)
+                rigid.velocity = new Vector2(transform.localScale.x * dashSpeed, 0f);
+            else
+                rigid.velocity = new Vector2(transform.localScale.x * (-1) * dashSpeed, 0f);
+        }
+
+        else
+        {
+            rigid.velocity = new Vector2(moveDirection * dashSpeed, 0f);
+        }
+
+        yield return new WaitForSeconds(dashTime);
+        rigid.gravityScale = originalGravity;
+        isDash = false;
+        yield return new WaitForSeconds(0.5f);
+        skillCoolTime = true;
+    }
     
 }

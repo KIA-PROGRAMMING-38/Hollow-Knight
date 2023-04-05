@@ -31,6 +31,12 @@ public class IdleState : StateMachineBehaviour
             animator.SetBool("Idle", false);
             animator.SetBool("isDash", true);
         }
+
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            animator.SetBool("Idle", false);
+            animator.SetBool("isSlash", true);
+        }
     }
 
 

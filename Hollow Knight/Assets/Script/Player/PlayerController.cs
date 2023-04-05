@@ -24,7 +24,10 @@ public class PlayerController : MonoBehaviour
     private bool isDash;
     private float dashSpeed;
     private float dashTime;
-    
+
+    private int attackCount;
+    private float attackTime;
+    private bool isAttack;
     Animator anim;
     internal Rigidbody2D rigid;
     SpriteRenderer spriteRenderer;
@@ -42,6 +45,7 @@ public class PlayerController : MonoBehaviour
         skillCoolTime = true;
         dashSpeed = 24f;
         dashTime = 0.2f;
+
     }
 
     void FixedUpdate()
@@ -63,6 +67,7 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(Dash());
         }
     }
+
     void Move()
     {
         // 대쉬 중 이동을 하지 않는다.
@@ -171,5 +176,6 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         skillCoolTime = true;
     }
-    
+
+
 }

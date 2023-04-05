@@ -34,6 +34,12 @@ public class RunState : StateMachineBehaviour
             animator.SetBool("isRunning", false);
             animator.SetBool("isDash", true);
         }
+
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            animator.SetBool("isRunning", false);
+            animator.SetBool("isSlash", true);
+        }
     }
 
 

@@ -28,6 +28,12 @@ public class RunState : StateMachineBehaviour
         {
             player.StartCoroutine(ChangeAnimation(animator));
         }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            animator.SetBool("isRunning", false);
+            animator.SetBool("isDash", true);
+        }
     }
 
 

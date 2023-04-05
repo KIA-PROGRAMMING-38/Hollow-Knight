@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] LayerMask islayer;
     private int moveDirection;
 
-    internal bool isGround;
+    private bool isGround;
     private bool isJumping;
     private float jumpTimeCounter;
     private float jumpTime;
@@ -24,8 +24,6 @@ public class PlayerController : MonoBehaviour
     private bool isDash;
     private float dashSpeed;
     private float dashTime;
-    
-    
     
     Animator anim;
     internal Rigidbody2D rigid;
@@ -153,7 +151,7 @@ public class PlayerController : MonoBehaviour
 
         skillCoolTime = false;
         isDash = true;
-
+        
         if(rigid.velocity.x == 0)
         {
             if (spriteRenderer.flipX == true)

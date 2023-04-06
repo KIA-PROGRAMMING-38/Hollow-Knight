@@ -5,6 +5,7 @@ using UnityEditor.Build;
 using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using UnityEngine.Pool;
 
 public class PlayerController : MonoBehaviour
 {
@@ -13,6 +14,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform pos;
     [SerializeField] float checkRadious;
     [SerializeField] LayerMask islayer;
+    [SerializeField] Transform dashPosition;
+    
+    
     private int moveDirection;
     public ObjectManager objectManager;
 
@@ -161,7 +165,8 @@ public class PlayerController : MonoBehaviour
 
         skillCoolTime = false;
         isDash = true;
-        
+
+
         if(rigid.velocity.x == 0)
         {
             if (spriteRenderer.flipX == true)
@@ -174,24 +179,35 @@ public class PlayerController : MonoBehaviour
         {
             rigid.velocity = new Vector2(moveDirection * dashSpeed, 0f);
         }
-        
+
+        // 대쉬 이펙트 생성
+        GameObject dash = ObjectManager.instance.DashPooledObject();
+        if (dash != null)
+        {
+            dash.transform.position = dashPosition.position;
+            Vector3 scale = dash.transform.localScale;
+            scale.x = spriteRenderer.flipX == true ? 1 : -1;
+            dash.transform.localScale = scale;
+            dash.SetActive(true);
+        }
+        GameObject dashSecond = ObjectManager.instance.DashPooledObject();
+        if(dashSecond != null)
+        {
+            dashSecond.transform.position = dashPosition.position;
+            Vector3 scale = dashSecond.transform.localScale;
+            scale.x = spriteRenderer.flipX == true ? -1 : 1;
+            dashSecond.transform.localScale = scale;
+            dashSecond.SetActive(true);
+        }
+
         yield return new WaitForSeconds(dashTime);
         rigid.gravityScale = originalGravity;
         isDash = false;
+        dash.SetActive(false);
+        dashSecond.SetActive(false);
         yield return new WaitForSeconds(0.5f);
         skillCoolTime = true;
     }
 
-    //IEnumerator Attack()
-    //{
-    //    float originalGravity = rigid.gravityScale;
-
-    //    if (isJumping)
-    //    {
-    //        originalGravity = 0f;
-    //    }
-    //    yield return new WaitForSeconds(attackTime);
-    //    originalGravity = rigid.gravityScale;
-        
-    //}
+    
 }

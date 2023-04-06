@@ -4,42 +4,60 @@ using UnityEngine;
 
 public class ObjectManager : MonoBehaviour
 {
-    public GameObject dashEffectPreFab;
-    private int poolSize = 10;
+    public static ObjectManager instance;
 
-    private Queue<GameObject> queue = new Queue<GameObject>();
-    void Start()
-    {
-        for(int i = 0; i < poolSize; ++i)
-        {
-            GameObject dashEffect = Instantiate(dashEffectPreFab, transform);
-            dashEffect.SetActive(false);
-            queue.Enqueue(dashEffect);
-        }
-    }
-
-    public void PlayEffect(Vector3 position)
-    {
-        if(queue.Count > 0)
-        {
-            GameObject dashEffect = queue.Dequeue();
-            dashEffect.transform.position = position;
-            dashEffect.SetActive(true);
-            StartCoroutine(DeactivateEffect(dashEffect));
-        }
-
-        else
-        {
-            GameObject dashEffect = Instantiate(dashEffectPreFab, position, Quaternion.identity, transform);
-            StartCoroutine(DeactivateEffect(dashEffect));
-        }
-    }
-
-    private IEnumerator DeactivateEffect(GameObject dashEffect)
-    {
-        yield return new WaitForSeconds(dashEffect.GetComponent<ParticleSystem>().main.duration);
-        dashEffect.SetActive(false);
-        queue.Enqueue(dashEffect);
-    }
+    private List<GameObject> dashEffectPool = new List<GameObject>();
+    private List<GameObject> dashSecondEffectPool = new List<GameObject>();
+    private int dashEffect = 1;
+    private int dashSecondEffect = 1;
     
+    [SerializeField] private GameObject dashEffectPrefab;
+    [SerializeField] private GameObject dashSecondEffectPrefab;
+    
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+    }
+
+    private void Start()
+    {
+        Dash();
+    }
+
+    private void Dash()
+    {
+        for (int index = 0; index < dashEffect; ++index)
+        {
+            GameObject obj = Instantiate(dashEffectPrefab);
+            obj.SetActive(false);
+            dashEffectPool.Add(obj);
+        }
+        for (int index = 0; index < dashSecondEffect; ++index)
+        {
+            GameObject obj = Instantiate(dashSecondEffectPrefab);
+            obj.SetActive(false);
+            dashSecondEffectPool.Add(obj);
+        }
+    }
+    public GameObject DashPooledObject()
+    {
+        for(int index = 0; index < dashEffectPool.Count; ++index)
+        {
+            if (!dashEffectPool[index].activeInHierarchy)
+            {
+                return dashEffectPool[index];
+            }
+            
+            else if (!dashSecondEffectPool[index].activeInHierarchy)
+            {
+                return dashSecondEffectPool[index];
+            }
+        }
+
+        return null;
+    }
+
 }

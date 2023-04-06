@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEditor.Build;
 using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public class PlayerController : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float checkRadious;
     [SerializeField] LayerMask islayer;
     private int moveDirection;
+    public ObjectManager objectManager;
 
     private bool isGround;
     private bool isJumping;
@@ -25,7 +27,6 @@ public class PlayerController : MonoBehaviour
     private float dashSpeed;
     private float dashTime;
 
-    private int attackCount;
     private float attackTime;
     private bool isAttack;
     Animator anim;
@@ -40,12 +41,15 @@ public class PlayerController : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         col = GetComponent<Collider2D>();
+        objectManager = GetComponent<ObjectManager>();
 
         jumpTime = 0.5f;
         skillCoolTime = true;
         dashSpeed = 24f;
         dashTime = 0.2f;
-
+        
+        attackTime = 0.2f;
+        
     }
 
     void FixedUpdate()
@@ -66,6 +70,7 @@ public class PlayerController : MonoBehaviour
         {   
             StartCoroutine(Dash());
         }
+
     }
 
     void Move()
@@ -169,7 +174,7 @@ public class PlayerController : MonoBehaviour
         {
             rigid.velocity = new Vector2(moveDirection * dashSpeed, 0f);
         }
-
+        
         yield return new WaitForSeconds(dashTime);
         rigid.gravityScale = originalGravity;
         isDash = false;
@@ -177,5 +182,16 @@ public class PlayerController : MonoBehaviour
         skillCoolTime = true;
     }
 
+    //IEnumerator Attack()
+    //{
+    //    float originalGravity = rigid.gravityScale;
 
+    //    if (isJumping)
+    //    {
+    //        originalGravity = 0f;
+    //    }
+    //    yield return new WaitForSeconds(attackTime);
+    //    originalGravity = rigid.gravityScale;
+        
+    //}
 }

@@ -592,6 +592,7 @@ MonoBehaviour:
   islayer:
     serializedVersion: 2
     m_Bits: 8
+  objectManager: {fileID: 0}
 --- !u!50 &626267018
 Rigidbody2D:
   serializedVersion: 4

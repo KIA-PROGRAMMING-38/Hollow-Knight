@@ -34,6 +34,12 @@ public class JumpState : StateMachineBehaviour
                 animator.SetTrigger("isUpSlash");
                 return;
             }
+
+            else if (Input.GetKey(KeyCode.DownArrow))
+            {
+                animator.SetTrigger("isDownSlash");
+                return;
+            }
             animator.SetTrigger("isSlash");
         }
         

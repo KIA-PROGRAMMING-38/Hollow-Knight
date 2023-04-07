@@ -34,9 +34,18 @@ public class IdleState : StateMachineBehaviour
 
         if (Input.GetKeyDown(KeyCode.X))
         {
-            animator.SetBool("Idle", false);
-            animator.SetBool("isSlash", true);
+            if (Input.GetKey(KeyCode.UpArrow))
+            {
+                animator.SetTrigger("isUpSlash");
+                return;
+            }
+            
+            animator.SetTrigger("isSlash");
         }
+
+        
+
+
     }
 
 

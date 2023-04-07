@@ -29,10 +29,20 @@ public class JumpState : StateMachineBehaviour
 
         if (Input.GetKeyDown(KeyCode.X))
         {
-            animator.SetBool("isJump", false);
-            animator.SetBool("isJumpDown", false);
-            animator.SetBool("isSlash", true);
+            if (Input.GetKey(KeyCode.UpArrow))
+            {
+                animator.SetTrigger("isUpSlash");
+                return;
+            }
+
+            else if (Input.GetKey(KeyCode.DownArrow))
+            {
+                animator.SetTrigger("isDownSlash");
+                return;
+            }
+            animator.SetTrigger("isSlash");
         }
+        
     }
 
 

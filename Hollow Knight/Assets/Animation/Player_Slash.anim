@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Player_Slash1
+  m_Name: Player_Slash
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -33,6 +33,8 @@ AnimationClip:
       value: {fileID: -79075160, guid: 4ef926a9c224350449de6211cfbbefde, type: 3}
     - time: 0.5
       value: {fileID: -1268619868, guid: 4ef926a9c224350449de6211cfbbefde, type: 3}
+    - time: 0.5833333
+      value: {fileID: -18997446, guid: 4ef926a9c224350449de6211cfbbefde, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -59,12 +61,13 @@ AnimationClip:
     - {fileID: 1930882220, guid: 4ef926a9c224350449de6211cfbbefde, type: 3}
     - {fileID: -79075160, guid: 4ef926a9c224350449de6211cfbbefde, type: 3}
     - {fileID: -1268619868, guid: 4ef926a9c224350449de6211cfbbefde, type: 3}
+    - {fileID: -18997446, guid: 4ef926a9c224350449de6211cfbbefde, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.5833333
+    m_StopTime: 0.6666666
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0

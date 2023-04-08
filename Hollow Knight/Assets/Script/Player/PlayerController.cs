@@ -14,7 +14,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform pos;
     [SerializeField] float checkRadious;
     [SerializeField] LayerMask islayer;
-    [SerializeField] Transform dashPosition;
+    [SerializeField] Transform effectPosition;
+    [SerializeField] Transform attackPositionX;
+    [SerializeField] Transform attackUpPosition;
+    [SerializeField] Transform attackDownPosition;
     
     
     private int moveDirection;
@@ -30,13 +33,13 @@ public class PlayerController : MonoBehaviour
     private bool isDash;
     private float dashSpeed;
     private float dashTime;
-
-    private float attackTime;
-    private bool isAttack;
-    Animator anim;
+    
+    
+    private Animator anim;
     internal Rigidbody2D rigid;
-    SpriteRenderer spriteRenderer;
-    Collider2D col;
+    private SpriteRenderer spriteRenderer;
+    private Collider2D col;
+    
     
     
     void Start()
@@ -44,15 +47,13 @@ public class PlayerController : MonoBehaviour
         anim = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        col = GetComponent<Collider2D>();
         objectManager = GetComponent<ObjectManager>();
+        col = GetComponent<Collider2D>();
 
         jumpTime = 0.5f;
         skillCoolTime = true;
         dashSpeed = 24f;
         dashTime = 0.2f;
-        
-        attackTime = 0.2f;
         
     }
 
@@ -65,6 +66,7 @@ public class PlayerController : MonoBehaviour
         Flip();
         Jump();
         SkillActive();
+        SlashActive();
     }
 
     // 스킬 활성화
@@ -75,6 +77,25 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(Dash());
         }
 
+    }
+
+    // 공격 활성화
+    private void SlashActive()
+    {
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            if (Input.GetKey(KeyCode.UpArrow))
+            {
+                StartCoroutine(UpAttack());
+                return;
+            }
+            if (Input.GetKey(KeyCode.DownArrow))
+            {
+                StartCoroutine(DownAttack());
+                return;
+            }
+            StartCoroutine(Attack());
+        }
     }
 
     void Move()
@@ -102,9 +123,9 @@ public class PlayerController : MonoBehaviour
     void Flip()
     {
         if (Input.GetKey(KeyCode.LeftArrow))
-            spriteRenderer.flipX = true;
+            this.transform.localScale = new Vector3(1f, 1f, 1f);
         else if (Input.GetKey(KeyCode.RightArrow))
-            spriteRenderer.flipX = false;
+            this.transform.localScale = new Vector3(-1f, 1f, 1f);
     }
     
     void Jump()
@@ -169,8 +190,8 @@ public class PlayerController : MonoBehaviour
 
         if(rigid.velocity.x == 0)
         {
-            if (spriteRenderer.flipX == true)
-                rigid.velocity = new Vector2(transform.localScale.x * dashSpeed, 0f);
+            if (transform.localScale.x == -1)
+                rigid.velocity = new Vector2(transform.localScale.x * (-1) * dashSpeed, 0f);
             else
                 rigid.velocity = new Vector2(transform.localScale.x * (-1) * dashSpeed, 0f);
         }
@@ -184,18 +205,18 @@ public class PlayerController : MonoBehaviour
         GameObject dash = ObjectManager.instance.DashPooledObject();
         if (dash != null)
         {
-            dash.transform.position = dashPosition.position;
+            dash.transform.position = effectPosition.position;
             Vector3 scale = dash.transform.localScale;
-            scale.x = spriteRenderer.flipX == true ? 1 : -1;
+            scale.x = transform.localScale.x;
             dash.transform.localScale = scale;
             dash.SetActive(true);
         }
         GameObject dashSecond = ObjectManager.instance.DashPooledObject();
         if(dashSecond != null)
         {
-            dashSecond.transform.position = dashPosition.position;
+            dashSecond.transform.position = effectPosition.position;
             Vector3 scale = dashSecond.transform.localScale;
-            scale.x = spriteRenderer.flipX == true ? -1 : 1;
+            scale.x = transform.localScale.x * (-1);
             dashSecond.transform.localScale = scale;
             dashSecond.SetActive(true);
         }
@@ -209,5 +230,67 @@ public class PlayerController : MonoBehaviour
         skillCoolTime = true;
     }
 
+    IEnumerator Attack()
+    {
+        float slashTime = 0.3f;
+        // Slash 이펙트 생성
+        GameObject slash = ObjectManager.instance.SlashPooledObject();
+        if (slash != null)
+        {
+            slash.transform.position = attackPositionX.position;
+            // 공격 판정
+            attackPositionX.GetComponent<Collider2D>().enabled = true;
+            Vector3 scale = slash.transform.localScale;
+            scale.x = transform.localScale.x;
+            slash.transform.localScale = scale;
+            slash.SetActive(true);
+        }
+        
+       
+        yield return new WaitForSeconds(slashTime);
+        slash.SetActive(false);
+        attackPositionX.GetComponent<Collider2D>().enabled = false;
+    }
 
+    IEnumerator UpAttack()
+    {
+        float slashTime = 0.3f;
+        // UpSlash 이펙트 생성
+        GameObject upSlash = ObjectManager.instance.SlashUpPooledObject();
+        if(upSlash != null)
+        {
+            upSlash.transform.position = attackUpPosition.position;
+            // 공격 판정
+            attackUpPosition.GetComponent<Collider2D>().enabled = true;
+            upSlash.SetActive(true);
+        }
+
+        yield return new WaitForSeconds(slashTime);
+        upSlash.SetActive(false);
+        attackUpPosition.GetComponent<Collider2D>().enabled = false;
+    }
+    IEnumerator DownAttack()
+    {
+        float slashTime = 0.3f;
+        //DownSlash 이펙트 생성
+        GameObject downSlash = ObjectManager.instance.SlashDownPooledObject();
+        if(downSlash != null)
+        {
+            downSlash.transform.position = attackDownPosition.position;
+            //공격 판정
+            attackDownPosition.GetComponent<Collider2D>().enabled = true;
+            downSlash.SetActive(true);
+        }
+        yield return new WaitForSeconds(slashTime);
+        downSlash.SetActive(false);
+        attackDownPosition.GetComponent<Collider2D>().enabled = false;
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            //TODO : 추후에 몬스터 구현 시 공격과 넉백을 같이 구현할 예정
+            Debug.Log("20 데미지를 입힘");
+        }
+    }
 }

@@ -42,7 +42,11 @@ public class JumpState : StateMachineBehaviour
             }
             animator.SetTrigger("isSlash");
         }
-        
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            animator.SetTrigger("isFireBall");
+        }
     }
 
 

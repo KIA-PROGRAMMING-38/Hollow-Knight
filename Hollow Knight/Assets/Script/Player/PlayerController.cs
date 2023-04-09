@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.Rendering;
 using UnityEngine;
@@ -18,6 +19,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform attackPositionX;
     [SerializeField] Transform attackUpPosition;
     [SerializeField] Transform attackDownPosition;
+    [SerializeField] Transform skillPosition;
     
     
     private int moveDirection;
@@ -33,13 +35,14 @@ public class PlayerController : MonoBehaviour
     private bool isDash;
     private float dashSpeed;
     private float dashTime;
-    
+
+    private float slashTime;
     
     private Animator anim;
     internal Rigidbody2D rigid;
     private SpriteRenderer spriteRenderer;
     private Collider2D col;
-    
+    GameObject skillBullet;
     
     
     void Start()
@@ -54,7 +57,8 @@ public class PlayerController : MonoBehaviour
         skillCoolTime = true;
         dashSpeed = 24f;
         dashTime = 0.2f;
-        
+        slashTime = 0.3f;
+        skillBullet = Resources.Load<GameObject>("Prefab/Player_skillBullet");
     }
 
     void FixedUpdate()
@@ -77,6 +81,11 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(Dash());
         }
 
+        if(Input.GetKeyDown(KeyCode.A) && skillCoolTime)
+        {
+            StartCoroutine(FireBall());
+            StartCoroutine(SkillBullet());
+        }
     }
 
     // 공격 활성화
@@ -232,7 +241,6 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator Attack()
     {
-        float slashTime = 0.3f;
         // Slash 이펙트 생성
         GameObject slash = ObjectManager.instance.SlashPooledObject();
         if (slash != null)
@@ -254,7 +262,6 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator UpAttack()
     {
-        float slashTime = 0.3f;
         // UpSlash 이펙트 생성
         GameObject upSlash = ObjectManager.instance.SlashUpPooledObject();
         if(upSlash != null)
@@ -271,7 +278,6 @@ public class PlayerController : MonoBehaviour
     }
     IEnumerator DownAttack()
     {
-        float slashTime = 0.3f;
         //DownSlash 이펙트 생성
         GameObject downSlash = ObjectManager.instance.SlashDownPooledObject();
         if(downSlash != null)
@@ -284,6 +290,51 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(slashTime);
         downSlash.SetActive(false);
         attackDownPosition.GetComponent<Collider2D>().enabled = false;
+    }
+
+    IEnumerator FireBall()
+    {
+        float skillTime = 0.3f;
+        skillCoolTime = false;
+        // 스킬 이펙트 생성
+        GameObject skill = ObjectManager.instance.SkillPooledObject();
+        if(skill != null)
+        {
+            skill.transform.position = skillPosition.position;
+            Vector3 scale = skill.transform.localScale;
+            scale.x = transform.localScale.x * (-1);
+            skill.transform.localScale = scale;
+            skill.SetActive(true);
+        }
+
+        // 스킬 사용 후 마나 감소
+        Debug.Log("마나 25가 감소하였습니다.");
+        yield return new WaitForSeconds(skillTime);
+        skill.SetActive(false);
+        skillCoolTime = true;
+    }
+    IEnumerator SkillBullet()
+    {
+        float bulletTime = 1f;
+        float bulletSpeed = 30f;
+        // 스킬 불렛 생성
+        GameObject bullet = ObjectManager.instance.SkillBulletPooledObject();
+        if (bullet != null)
+        {
+            bullet.transform.position = skillPosition.position;
+            Vector3 scale = bullet.transform.localScale;
+            scale.x = transform.localScale.x * (-1);
+            bullet.transform.localScale = scale;
+            bullet.SetActive(true);
+        }
+
+        if(transform.localScale.x < 0)
+            bullet.transform.GetComponent<Rigidbody2D>().velocity = Vector3.right * bulletSpeed;
+        else
+            bullet.transform.GetComponent<Rigidbody2D>().velocity = Vector3.left * bulletSpeed;
+
+        yield return new WaitForSeconds(bulletTime);
+        bullet.SetActive(false);
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {

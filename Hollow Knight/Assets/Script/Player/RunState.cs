@@ -44,7 +44,11 @@ public class RunState : StateMachineBehaviour
             }
             animator.SetTrigger("isSlash");
         }
-        
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            animator.SetTrigger("isFireBall");
+        }
     }
 
 

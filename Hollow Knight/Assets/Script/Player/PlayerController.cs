@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
     internal Rigidbody2D rigid;
     private SpriteRenderer spriteRenderer;
     private Collider2D col;
-    GameObject skillBullet;
+    
     
     
     void Start()
@@ -58,7 +58,6 @@ public class PlayerController : MonoBehaviour
         dashSpeed = 24f;
         dashTime = 0.2f;
         slashTime = 0.3f;
-        skillBullet = Resources.Load<GameObject>("Prefab/Player_skillBullet");
     }
 
     void FixedUpdate()

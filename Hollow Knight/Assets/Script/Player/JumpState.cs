@@ -6,7 +6,7 @@ using UnityEngine;
 public class JumpState : StateMachineBehaviour
 {
     PlayerController player;
-
+    private int jumpCount;
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         player = animator.GetComponent<PlayerController>();
@@ -26,6 +26,8 @@ public class JumpState : StateMachineBehaviour
             animator.SetBool("isJumpDown", false);
             animator.SetBool("isRunning", true);
         }
+
+        Jump(animator);
 
         if (Input.GetKeyDown(KeyCode.X))
         {
@@ -52,8 +54,22 @@ public class JumpState : StateMachineBehaviour
 
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-
+        
     }
 
-
+    void Jump(Animator animator)
+    {
+        if(player.transform.position.y < 0)
+        {
+            jumpCount = 1;
+        }
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            if (Input.GetKeyDown(KeyCode.Z) && jumpCount == 1)
+            {
+                animator.SetTrigger("isDoubleJump");
+            }
+            --jumpCount;
+        }
+    }
 }

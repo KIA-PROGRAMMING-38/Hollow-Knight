@@ -23,6 +23,9 @@ public class ObjectManager : MonoBehaviour
     private int skillEffect = 2;
     private int skillBullet = 5;
 
+    private List<GameObject> healEffectPool = new List<GameObject>();
+    private int healEffect = 2;
+
     [SerializeField] private GameObject dashEffectPrefab;
     [SerializeField] private GameObject dashSecondEffectPrefab;
     [SerializeField] private GameObject slashEffectPrefab;
@@ -30,6 +33,7 @@ public class ObjectManager : MonoBehaviour
     [SerializeField] private GameObject slashDownEffectPrefab;
     [SerializeField] private GameObject skillEffectPrefab;
     [SerializeField] private GameObject skillBulletPrefab;
+    [SerializeField] private GameObject healEffectPrefab;
 
     private void Awake()
     {
@@ -47,6 +51,7 @@ public class ObjectManager : MonoBehaviour
         DownAttack();
         Skill();
         SkillBullet();
+        HealEffect();
     }
 
     private void Dash()
@@ -127,6 +132,15 @@ public class ObjectManager : MonoBehaviour
             skillBulletPool.Add(obj);
         }
     }
+    private void HealEffect()
+    {
+        for(int index = 0; index < healEffect; ++index)
+        {
+            GameObject obj = Instantiate(healEffectPrefab);
+            obj.SetActive(false);
+            healEffectPool.Add(obj);
+        }
+    }
     public GameObject SlashPooledObject()
     {
         for(int index = 0; index < slashEffectPool.Count; ++index)
@@ -178,6 +192,17 @@ public class ObjectManager : MonoBehaviour
             if (!skillBulletPool[index].activeInHierarchy)
             {
                 return skillBulletPool[index];
+            }
+        }
+        return null;
+    }
+    public GameObject HealEffectPooledObject()
+    {
+        for(int index = 0; index < healEffectPool.Count; ++index)
+        {
+            if (!healEffectPool[index].activeInHierarchy)
+            {
+                return healEffectPool[index];
             }
         }
         return null;

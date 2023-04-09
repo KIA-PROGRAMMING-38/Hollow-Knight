@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.Build;
@@ -37,12 +38,16 @@ public class PlayerController : MonoBehaviour
     private float dashTime;
 
     private float slashTime;
-    
+
+    private float keyDownTime;
+    private bool isHeal;
+    private bool isHealRunning;
+
     private Animator anim;
     internal Rigidbody2D rigid;
     private SpriteRenderer spriteRenderer;
     private Collider2D col;
-    GameObject skillBullet;
+    
     
     
     void Start()
@@ -58,7 +63,7 @@ public class PlayerController : MonoBehaviour
         dashSpeed = 24f;
         dashTime = 0.2f;
         slashTime = 0.3f;
-        skillBullet = Resources.Load<GameObject>("Prefab/Player_skillBullet");
+        keyDownTime = 0f;
     }
 
     void FixedUpdate()
@@ -76,12 +81,29 @@ public class PlayerController : MonoBehaviour
     // 스킬 활성화
     private void SkillActive()
     {
+        
         if (Input.GetKey(KeyCode.C) && skillCoolTime)
         {   
             StartCoroutine(Dash());
         }
+        
+        if (Input.GetKeyDown(KeyCode.A) && skillCoolTime)
+        {
+            keyDownTime = Time.time;
+            isHeal = false;
+        }
 
-        if(Input.GetKeyDown(KeyCode.A) && skillCoolTime)
+        if (Input.GetKey(KeyCode.A))
+        {
+            if (Time.time - keyDownTime >= 0.5)
+            {
+                if(!isHealRunning)
+                    StartCoroutine(Heal());
+                isHeal = true;
+            }
+        }
+
+        if (Input.GetKeyUp(KeyCode.A) && !isHeal)
         {
             StartCoroutine(FireBall());
             StartCoroutine(SkillBullet());
@@ -335,6 +357,44 @@ public class PlayerController : MonoBehaviour
 
         yield return new WaitForSeconds(bulletTime);
         bullet.SetActive(false);
+    }
+    IEnumerator Heal()
+    {
+        isHealRunning = true;
+        float healTime = 1f;
+        float startTime = Time.time;
+        skillCoolTime = false;
+        // 힐 이펙트 생성
+        GameObject heal = ObjectManager.instance.HealEffectPooledObject();
+        if(heal != null)
+        {
+            heal.transform.position = effectPosition.position;
+            heal.SetActive(true);
+        }
+        while (isHeal)
+        {
+            if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.A))
+            {
+                // 힐 모션 중 방향키를 눌러 취소
+                isHeal = false;
+                break;
+            }
+            else if (Time.time > startTime + healTime)
+            {
+                // 힐 모션 종료
+                isHeal = false;
+                //TODO : UI구현과 함께 구현
+                Debug.Log("목숨이 하나 늘어났습니다.");
+                Debug.Log("마나가 20 사용되었습니다.");
+                skillCoolTime = true;
+                
+            }
+            yield return null;
+        }
+        heal.SetActive(false);
+        isHealRunning = false;
+        
+        Debug.Log("힐끝");
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {

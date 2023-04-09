@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.Rendering;
 using UnityEngine;
@@ -41,7 +42,7 @@ public class PlayerController : MonoBehaviour
     internal Rigidbody2D rigid;
     private SpriteRenderer spriteRenderer;
     private Collider2D col;
-    
+    GameObject skillBullet;
     
     
     void Start()
@@ -57,7 +58,7 @@ public class PlayerController : MonoBehaviour
         dashSpeed = 24f;
         dashTime = 0.2f;
         slashTime = 0.3f;
-        
+        skillBullet = Resources.Load<GameObject>("Prefab/Player_skillBullet");
     }
 
     void FixedUpdate()
@@ -83,10 +84,8 @@ public class PlayerController : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.A) && skillCoolTime)
         {
             StartCoroutine(FireBall());
+            StartCoroutine(SkillBullet());
         }
-         
-        
-
     }
 
     // 공격 활성화
@@ -307,9 +306,35 @@ public class PlayerController : MonoBehaviour
             skill.transform.localScale = scale;
             skill.SetActive(true);
         }
+
+        // 스킬 사용 후 마나 감소
+        Debug.Log("마나 25가 감소하였습니다.");
         yield return new WaitForSeconds(skillTime);
         skill.SetActive(false);
         skillCoolTime = true;
+    }
+    IEnumerator SkillBullet()
+    {
+        float bulletTime = 1f;
+        float bulletSpeed = 30f;
+        // 스킬 불렛 생성
+        GameObject bullet = ObjectManager.instance.SkillBulletPooledObject();
+        if (bullet != null)
+        {
+            bullet.transform.position = skillPosition.position;
+            Vector3 scale = bullet.transform.localScale;
+            scale.x = transform.localScale.x * (-1);
+            bullet.transform.localScale = scale;
+            bullet.SetActive(true);
+        }
+
+        if(transform.localScale.x < 0)
+            bullet.transform.GetComponent<Rigidbody2D>().velocity = Vector3.right * bulletSpeed;
+        else
+            bullet.transform.GetComponent<Rigidbody2D>().velocity = Vector3.left * bulletSpeed;
+
+        yield return new WaitForSeconds(bulletTime);
+        bullet.SetActive(false);
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {

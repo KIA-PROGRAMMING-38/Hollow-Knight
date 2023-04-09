@@ -181,7 +181,14 @@ public class PlayerController : MonoBehaviour
             rigid.velocity = Vector2.up * jumpPower;
             
         }
-
+        // 더블 점프
+        if((isGround == false && jumpCount == 1) && Input.GetKeyDown(KeyCode.Z))
+        {
+            StartCoroutine(DoubleJump());
+            isJumping = true;
+            jumpTimeCounter = jumpTime;
+            rigid.velocity = Vector2.up * jumpPower;
+        }
         // 홀딩 시 점프 높이 상승
         if((isJumping == true || jumpCount == 1) && Input.GetKey(KeyCode.Z))
         {
@@ -198,7 +205,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-
+        
         if (Input.GetKeyUp(KeyCode.Z))
         {
             --jumpCount;
@@ -208,7 +215,21 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-
+    IEnumerator DoubleJump()
+    {
+        float jumpTime = 0.3f;
+        GameObject doubleJump = ObjectManager.instance.DoubleJumpEffectPooledObject();
+        if(doubleJump != null)
+        {
+            doubleJump.transform.position = effectPosition.position;
+            Vector3 scale = doubleJump.transform.localScale;
+            scale.x = transform.localScale.x;
+            doubleJump.transform.localScale = scale;
+            doubleJump.SetActive(true);
+        }
+        yield return new WaitForSeconds(jumpTime);
+        doubleJump.SetActive(false);
+    }
     IEnumerator Dash()
     {
         // 중력 삭제

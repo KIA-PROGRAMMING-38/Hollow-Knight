@@ -855,6 +855,7 @@ MonoBehaviour:
   skillEffectPrefab: {fileID: 4999818253992102637, guid: 466eee29e759db847ab0faee18337cf1, type: 3}
   skillBulletPrefab: {fileID: 4785523369008635268, guid: 6475f403de3ce0c4a9da12c72d5b4a9f, type: 3}
   healEffectPrefab: {fileID: 5369230778062338772, guid: cc0dfe47d46fd1843b403f24ddcdda8c, type: 3}
+  doubleJumpEffectPrefab: {fileID: 7424875119902618643, guid: 84f81354a5cad4b4cabecdce012fdee4, type: 3}
 --- !u!4 &898300939
 Transform:
   m_ObjectHideFlags: 0

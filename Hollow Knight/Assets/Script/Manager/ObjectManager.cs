@@ -26,6 +26,9 @@ public class ObjectManager : MonoBehaviour
     private List<GameObject> healEffectPool = new List<GameObject>();
     private int healEffect = 2;
 
+    private List<GameObject> doubleJumpEffectPool = new List<GameObject>();
+    private int doubleJumpEffect = 2;
+
     [SerializeField] private GameObject dashEffectPrefab;
     [SerializeField] private GameObject dashSecondEffectPrefab;
     [SerializeField] private GameObject slashEffectPrefab;
@@ -34,6 +37,7 @@ public class ObjectManager : MonoBehaviour
     [SerializeField] private GameObject skillEffectPrefab;
     [SerializeField] private GameObject skillBulletPrefab;
     [SerializeField] private GameObject healEffectPrefab;
+    [SerializeField] private GameObject doubleJumpEffectPrefab;
 
     private void Awake()
     {
@@ -52,6 +56,7 @@ public class ObjectManager : MonoBehaviour
         Skill();
         SkillBullet();
         HealEffect();
+        DoubleJump();
     }
 
     private void Dash()
@@ -141,6 +146,15 @@ public class ObjectManager : MonoBehaviour
             healEffectPool.Add(obj);
         }
     }
+    private void DoubleJump()
+    {
+        for(int index = 0; index < doubleJumpEffect; ++index)
+        {
+            GameObject obj = Instantiate(doubleJumpEffectPrefab);
+            obj.SetActive(false);
+            doubleJumpEffectPool.Add(obj);
+        }
+    }
     public GameObject SlashPooledObject()
     {
         for(int index = 0; index < slashEffectPool.Count; ++index)
@@ -203,6 +217,17 @@ public class ObjectManager : MonoBehaviour
             if (!healEffectPool[index].activeInHierarchy)
             {
                 return healEffectPool[index];
+            }
+        }
+        return null;
+    }
+    public GameObject DoubleJumpEffectPooledObject()
+    {
+        for(int index = 0; index < doubleJumpEffectPool.Count; ++index)
+        {
+            if (!doubleJumpEffectPool[index].activeInHierarchy)
+            {
+                return doubleJumpEffectPool[index];
             }
         }
         return null;

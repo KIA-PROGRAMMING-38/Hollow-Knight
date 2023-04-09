@@ -18,11 +18,15 @@ public class ObjectManager : MonoBehaviour
     private int slashUpEffect = 2;
     private int slashDownEffect = 2;
 
+    private List<GameObject> skillEffectPool = new List<GameObject>();
+    private int skillEffect = 2;
+
     [SerializeField] private GameObject dashEffectPrefab;
     [SerializeField] private GameObject dashSecondEffectPrefab;
     [SerializeField] private GameObject slashEffectPrefab;
     [SerializeField] private GameObject slashUpEffectPrefab;
     [SerializeField] private GameObject slashDownEffectPrefab;
+    [SerializeField] private GameObject skillEffectPrefab;
 
     private void Awake()
     {
@@ -38,6 +42,7 @@ public class ObjectManager : MonoBehaviour
         Attack();
         UpAttack();
         DownAttack();
+        Skill();
     }
 
     private void Dash()
@@ -100,6 +105,15 @@ public class ObjectManager : MonoBehaviour
             slashDownEffectPool.Add(obj);
         }
     }
+    private void Skill()
+    {
+        for(int index = 0; index < skillEffect; ++index)
+        {
+            GameObject obj = Instantiate(skillEffectPrefab);
+            obj.SetActive(false);
+            skillEffectPool.Add(obj);
+        }
+    }
     public GameObject SlashPooledObject()
     {
         for(int index = 0; index < slashEffectPool.Count; ++index)
@@ -129,6 +143,17 @@ public class ObjectManager : MonoBehaviour
             if (!slashDownEffectPool[index].activeInHierarchy)
             {
                 return slashDownEffectPool[index];
+            }
+        }
+        return null;
+    }
+    public GameObject SkillPooledObject()
+    {
+        for(int index = 0; index < skillEffectPool.Count; ++index)
+        {
+            if (!skillEffectPool[index].activeInHierarchy)
+            {
+                return skillEffectPool[index];
             }
         }
         return null;

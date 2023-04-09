@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform attackPositionX;
     [SerializeField] Transform attackUpPosition;
     [SerializeField] Transform attackDownPosition;
+    [SerializeField] Transform skillPosition;
     
     
     private int moveDirection;
@@ -33,7 +34,8 @@ public class PlayerController : MonoBehaviour
     private bool isDash;
     private float dashSpeed;
     private float dashTime;
-    
+
+    private float slashTime;
     
     private Animator anim;
     internal Rigidbody2D rigid;
@@ -54,6 +56,7 @@ public class PlayerController : MonoBehaviour
         skillCoolTime = true;
         dashSpeed = 24f;
         dashTime = 0.2f;
+        slashTime = 0.3f;
         
     }
 
@@ -76,6 +79,13 @@ public class PlayerController : MonoBehaviour
         {   
             StartCoroutine(Dash());
         }
+
+        if(Input.GetKeyDown(KeyCode.A) && skillCoolTime)
+        {
+            StartCoroutine(FireBall());
+        }
+         
+        
 
     }
 
@@ -232,7 +242,6 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator Attack()
     {
-        float slashTime = 0.3f;
         // Slash 이펙트 생성
         GameObject slash = ObjectManager.instance.SlashPooledObject();
         if (slash != null)
@@ -254,7 +263,6 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator UpAttack()
     {
-        float slashTime = 0.3f;
         // UpSlash 이펙트 생성
         GameObject upSlash = ObjectManager.instance.SlashUpPooledObject();
         if(upSlash != null)
@@ -271,7 +279,6 @@ public class PlayerController : MonoBehaviour
     }
     IEnumerator DownAttack()
     {
-        float slashTime = 0.3f;
         //DownSlash 이펙트 생성
         GameObject downSlash = ObjectManager.instance.SlashDownPooledObject();
         if(downSlash != null)
@@ -284,6 +291,25 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(slashTime);
         downSlash.SetActive(false);
         attackDownPosition.GetComponent<Collider2D>().enabled = false;
+    }
+
+    IEnumerator FireBall()
+    {
+        float skillTime = 0.3f;
+        skillCoolTime = false;
+        // 스킬 이펙트 생성
+        GameObject skill = ObjectManager.instance.SkillPooledObject();
+        if(skill != null)
+        {
+            skill.transform.position = skillPosition.position;
+            Vector3 scale = skill.transform.localScale;
+            scale.x = transform.localScale.x * (-1);
+            skill.transform.localScale = scale;
+            skill.SetActive(true);
+        }
+        yield return new WaitForSeconds(skillTime);
+        skill.SetActive(false);
+        skillCoolTime = true;
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {

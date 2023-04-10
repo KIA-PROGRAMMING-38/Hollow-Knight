@@ -7,6 +7,7 @@ public class JumpState : StateMachineBehaviour
 {
     PlayerController player;
     private int jumpCount;
+    
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         player = animator.GetComponent<PlayerController>();
@@ -15,13 +16,14 @@ public class JumpState : StateMachineBehaviour
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        RaycastHit2D rayHit = Physics2D.Raycast(player.rigid.position, Vector3.down, 1, LayerMask.GetMask("Ground"));
         if(player.rigid.velocity.y < 0)
         {
             animator.SetBool("isJump", false);
             animator.SetBool("isJumpDown", true);
         }
         
-        else if (player.transform.position.y < 0)
+        else if (rayHit.distance < 0.5f)
         {
             animator.SetBool("isJumpDown", false);
             animator.SetBool("isRunning", true);

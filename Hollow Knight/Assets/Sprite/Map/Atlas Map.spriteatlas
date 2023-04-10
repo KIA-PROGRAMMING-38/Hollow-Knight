@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Atlas Map
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 8
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: da1afaf4c77f4f94e81a68f046ab0343, type: 3}
+    - {fileID: 2800000, guid: a960d9442bd365c409fd067251177a38, type: 3}
+    - {fileID: 2800000, guid: e36767a3ec9768a4e848dbc588e9772c, type: 3}
+    - {fileID: 2800000, guid: 62a3a2c8b6137e247b1b671d2125ffb2, type: 3}
+    - {fileID: 2800000, guid: 57038e76843bb5946b76f5821d40beef, type: 3}
+    - {fileID: 2800000, guid: a2ed3606fff25d643bfcde311f718424, type: 3}
+    - {fileID: 2800000, guid: 477500d1396f3204682dc1987ce5513c, type: 3}
+    - {fileID: 2800000, guid: 04e1aded493dc4e488967c97e867ed9a, type: 3}
+    - {fileID: 2800000, guid: 1016e544c2b4e4a46a1aa15bed3582e3, type: 3}
+    - {fileID: 2800000, guid: fd2e14c590fcd4f4bba9168927989f5b, type: 3}
+    - {fileID: 2800000, guid: 2c18711478d3bdc4ba3733e419e176d9, type: 3}
+    - {fileID: 2800000, guid: a0235969ca33c2b448678a9f00037dd1, type: 3}
+    - {fileID: 2800000, guid: 433b16792771b8c4c93d68cb8938d7c2, type: 3}
+    - {fileID: 2800000, guid: aea92fed6f483dc43a1c88f4ecba08f7, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 477500d1396f3204682dc1987ce5513c, type: 3}
+  - {fileID: 21300000, guid: e36767a3ec9768a4e848dbc588e9772c, type: 3}
+  - {fileID: 21300000, guid: 2c18711478d3bdc4ba3733e419e176d9, type: 3}
+  - {fileID: 21300000, guid: 1016e544c2b4e4a46a1aa15bed3582e3, type: 3}
+  - {fileID: 21300000, guid: a960d9442bd365c409fd067251177a38, type: 3}
+  - {fileID: 21300000, guid: da1afaf4c77f4f94e81a68f046ab0343, type: 3}
+  - {fileID: 21300000, guid: fd2e14c590fcd4f4bba9168927989f5b, type: 3}
+  - {fileID: 21300000, guid: a2ed3606fff25d643bfcde311f718424, type: 3}
+  - {fileID: 21300000, guid: 57038e76843bb5946b76f5821d40beef, type: 3}
+  - {fileID: 21300000, guid: 62a3a2c8b6137e247b1b671d2125ffb2, type: 3}
+  - {fileID: 21300000, guid: a0235969ca33c2b448678a9f00037dd1, type: 3}
+  - {fileID: 21300000, guid: 433b16792771b8c4c93d68cb8938d7c2, type: 3}
+  - {fileID: 21300000, guid: 04e1aded493dc4e488967c97e867ed9a, type: 3}
+  - {fileID: 21300000, guid: aea92fed6f483dc43a1c88f4ecba08f7, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - cd_broken_wall_FG
+  - cd_big_roof_0001_06
+  - floor_stone_02
+  - floor_layered_0003_01
+  - cd_big_roof_0000_07
+  - bone_deep_0009_Layer-133
+  - floor_stone_01
+  - cd_big_roof_0006_01
+  - cd_big_roof_0004_03
+  - cd_big_roof_0002_05
+  - gg_col_lamp
+  - plat_float_06
+  - deepnest_stalactites
+  - plat_float_07
+  m_RenderDataMap: {}
+  m_Tag: Atlas Map
+  m_IsVariant: 0

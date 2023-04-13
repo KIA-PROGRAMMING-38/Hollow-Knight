@@ -11,16 +11,16 @@ using UnityEngine.Pool;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] float speed;
+    [SerializeField] private float speed;
     [SerializeField] private float jumpPower;
-    [SerializeField] Transform pos;
-    [SerializeField] float checkRadious;
-    [SerializeField] LayerMask islayer;
-    [SerializeField] Transform effectPosition;
-    [SerializeField] Transform attackPositionX;
-    [SerializeField] Transform attackUpPosition;
-    [SerializeField] Transform attackDownPosition;
-    [SerializeField] Transform skillPosition;
+    [SerializeField] private Transform pos;
+    [SerializeField] private float checkRadious;
+    [SerializeField] private LayerMask islayer;
+    [SerializeField] private Transform effectPosition;
+    [SerializeField] private Transform attackPositionX;
+    [SerializeField] private Transform attackUpPosition;
+    [SerializeField] private Transform attackDownPosition;
+    [SerializeField] private Transform skillPosition;
     
     
     private int moveDirection;
@@ -43,6 +43,7 @@ public class PlayerController : MonoBehaviour
     private bool isHeal;
     private bool isHealRunning;
 
+    
     private Animator anim;
     internal Rigidbody2D rigid;
     private SpriteRenderer spriteRenderer;
@@ -64,6 +65,7 @@ public class PlayerController : MonoBehaviour
         dashTime = 0.2f;
         slashTime = 0.3f;
         keyDownTime = 0f;
+        
     }
 
     void FixedUpdate()
@@ -419,10 +421,11 @@ public class PlayerController : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Monster"))
         {
             //TODO : 추후에 몬스터 구현 시 공격과 넉백을 같이 구현할 예정
-            Debug.Log("20 데미지를 입힘");
+            
+            
         }
     }
 }

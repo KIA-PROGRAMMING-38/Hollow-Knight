@@ -30,7 +30,9 @@ public class MonsterWalk : StateMachineBehaviour
         float delta = Time.deltaTime;
         float step = monster.moveSpeed * delta;
         elapsedTime += delta;
-        
+
+        Attack(animator);
+
         if (elapsedTime >= patrolSec)
         {
             animator.SetBool("Walk", false);
@@ -60,5 +62,18 @@ public class MonsterWalk : StateMachineBehaviour
         patrolSec = Random.Range(patrolMinSec, patrolMaxSec);
         SetNextPoint();
         elapsedTime = 0f;
+    }
+    private void Attack(Animator anim)
+    {
+        Vector2 direction = monster.target.position - monsterTransform.position;
+        float distance = direction.magnitude;
+        if (distance <= monster.attackRange)
+        {
+            anim.SetBool("Idle", false);
+            anim.SetBool("Walk", false);
+            anim.SetTrigger("Hit");
+            monster.Flip(monster.target.position.x, monsterTransform.position.x);
+        }
+        return;
     }
 }

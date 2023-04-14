@@ -18,7 +18,7 @@ public class HuskHornhead : MonsterController
         if (collision.CompareTag("Weapon"))
         {
             // 데미지를 입었을 때
-            anim.SetTrigger("Attack");
+            anim.SetTrigger("Hit");
             Damage(hitDamage);
         }
     }

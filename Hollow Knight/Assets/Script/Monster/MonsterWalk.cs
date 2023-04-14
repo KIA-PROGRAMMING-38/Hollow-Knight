@@ -4,18 +4,18 @@ using Unity.VisualScripting;
 using UnityEditor.Tilemaps;
 using UnityEngine;
 
-public class EnemyWalk : StateMachineBehaviour
+public class MonsterWalk : StateMachineBehaviour
 {
-    private float patrolMinSec = 3f;
-    private float patrolMaxSec = 5f;
-    private float patrolSec;
+    internal float patrolMinSec = 3f;
+    internal float patrolMaxSec = 5f;
+    internal float patrolSec;
 
-    private MonsterController monster;
-    private Transform monsterTransform;
+    internal MonsterController monster;
+    internal Transform monsterTransform;
 
-    private Vector3 nextPoint;
-    private int currentPointIndex = 0;
-    private float elapsedTime;
+    internal Vector3 nextPoint;
+    internal int currentPointIndex = 0;
+    internal float elapsedTime;
     
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -40,7 +40,7 @@ public class EnemyWalk : StateMachineBehaviour
             return;
         }
 
-        monster.transform.position = Vector3.MoveTowards(monster.transform.position, nextPoint, step);
+        monsterTransform.position = Vector3.MoveTowards(monster.transform.position, nextPoint, step);
         if(Vector3.Distance(monster.transform.position, nextPoint) < 0.1f)
         {
             SetNextPoint();
@@ -72,8 +72,8 @@ public class EnemyWalk : StateMachineBehaviour
             anim.SetBool("Idle", false);
             anim.SetBool("Walk", false);
             anim.SetTrigger("Hit");
+            monster.Flip(monster.target.position.x, monsterTransform.position.x);
         }
         return;
     }
-
 }

@@ -1,32 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
-public class EnemyIdle : StateMachineBehaviour
+public class MonsterIdle : StateMachineBehaviour
 {
-    private float idleMinSec = 1f;
-    private float idleMaxSec = 3f;
-    private float totalElapsedTime;
-    private float idleTime;
+    internal float idleMinSec = 1f;
+    internal float idleMaxSec = 3f;
+    internal float totalElapsedTime;
+    internal float idleTime;
 
-    private MonsterController monster;
-    private Transform monsterTransform;
+    internal MonsterController monster;
+    internal Transform monsterTransform;
 
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         monster = animator.GetComponent<MonsterController>();
         monsterTransform = animator.GetComponent<Transform>();
-        
         Init();
     }
-
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         float deltaTime = Time.deltaTime;
-        
-        totalElapsedTime += deltaTime;
+
         Attack(animator);
+
+        totalElapsedTime += deltaTime;
         if(totalElapsedTime >= idleTime)
         {
             animator.SetBool("Idle", false);
@@ -50,7 +50,9 @@ public class EnemyIdle : StateMachineBehaviour
             anim.SetBool("Idle", false);
             anim.SetBool("Walk", false);
             anim.SetTrigger("Hit");
+            monster.Flip(monster.target.position.x, monsterTransform.position.x);
         }
         return;
     }
+
 }

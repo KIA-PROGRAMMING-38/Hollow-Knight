@@ -7,10 +7,8 @@ using static UnityEngine.GraphicsBuffer;
 
 public class MonsterAttack : StateMachineBehaviour
 {
-    private MonsterController monster;
-    private Transform monsterTransform;
-    
-   
+    internal MonsterController monster;
+    internal Transform monsterTransform;
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         monster = animator.GetComponent<MonsterController>();

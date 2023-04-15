@@ -41,6 +41,6 @@ public class MonsterController : MonoBehaviour
         monsterHealth -= damage;
         Flip(target.position.x, transform.position.x);
         //ÇÇ°Ý½Ã ³Ë¹é
-        rigid.AddForce(new Vector2(dir * 5, 0), ForceMode2D.Impulse);
+        rigid.AddForce(new Vector2(dir * 4, 0), ForceMode2D.Impulse);
     }
 }

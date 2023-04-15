@@ -2,17 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HuskHornhead : MonsterController
+public class Gruzzer : MonsterController
 {
+    private float temporaryGravity = 2f;
     private void Awake()
     {
         base.Awake();
-        moveSpeed = 3f;
-        attackSpeed = 10f;
+        moveSpeed = 6f;
+        attackSpeed = 8f;
         monsterHealth = 60;
         hitDamage = 20;
-        attackRange = 7f;
+        attackRange = 8f;
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Weapon"))
@@ -32,7 +34,6 @@ public class HuskHornhead : MonsterController
                 anim.SetTrigger("Die");
                 col.enabled = false;
                 rigid.simulated = false;
-                spriteRenderer.sortingOrder = -1;
             }
 
         }

@@ -71,7 +71,7 @@ public class MonsterWalk : StateMachineBehaviour
         {
             anim.SetBool("Idle", false);
             anim.SetBool("Walk", false);
-            anim.SetTrigger("Hit");
+            anim.SetTrigger("Attack");
             monster.Flip(monster.target.position.x, monsterTransform.position.x);
         }
         return;

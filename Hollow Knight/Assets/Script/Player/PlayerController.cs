@@ -6,8 +6,8 @@ using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.Rendering;
 using UnityEngine;
-using UnityEngine.PlayerLoop;
-using UnityEngine.Pool;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform attackUpPosition;
     [SerializeField] private Transform attackDownPosition;
     [SerializeField] private Transform skillPosition;
-    
+    [SerializeField] private UIManager uiManager;
     
     private int moveDirection;
     public ObjectManager objectManager;
@@ -42,6 +42,8 @@ public class PlayerController : MonoBehaviour
     private float keyDownTime;
     private bool isHeal;
     private bool isHealRunning;
+
+    private int life;
 
     
     private Animator anim;
@@ -65,7 +67,7 @@ public class PlayerController : MonoBehaviour
         dashTime = 0.2f;
         slashTime = 0.3f;
         keyDownTime = 0f;
-        
+        life = 5;
     }
 
     void FixedUpdate()
@@ -353,7 +355,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // 스킬 사용 후 마나 감소
-        Debug.Log("마나 25가 감소하였습니다.");
+        uiManager.ConsumptionMpIcon(0.3f);
         yield return new WaitForSeconds(skillTime);
         skill.SetActive(false);
         skillCoolTime = true;
@@ -419,13 +421,14 @@ public class PlayerController : MonoBehaviour
         
         Debug.Log("힐끝");
     }
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Monster"))
+        if (collision.transform.CompareTag("Monster"))
         {
-            //TODO : 추후에 몬스터 구현 시 공격과 넉백을 같이 구현할 예정
-            
-            
+            life--;
+            uiManager.UpdateLifeIcon(life);
         }
     }
+
+
 }

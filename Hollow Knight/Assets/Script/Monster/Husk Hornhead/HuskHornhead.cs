@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class HuskHornhead : MonsterController
 {
+    [SerializeField] private UIManager uiManager;
     private void Awake()
     {
         base.Awake();
@@ -33,6 +34,7 @@ public class HuskHornhead : MonsterController
                 col.enabled = false;
                 rigid.simulated = false;
                 spriteRenderer.sortingOrder = -1;
+                uiManager.AcquisitionMpIcon(0.3f);
             }
 
         }

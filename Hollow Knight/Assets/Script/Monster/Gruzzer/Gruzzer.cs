@@ -5,6 +5,7 @@ using UnityEngine;
 public class Gruzzer : MonsterController
 {
     private float temporaryGravity = 2f;
+    [SerializeField] private UIManager uiManager;
     private void Awake()
     {
         base.Awake();
@@ -34,6 +35,7 @@ public class Gruzzer : MonsterController
                 anim.SetTrigger("Die");
                 col.enabled = false;
                 rigid.simulated = false;
+                uiManager.AcquisitionMpIcon(0.3f);
             }
 
         }

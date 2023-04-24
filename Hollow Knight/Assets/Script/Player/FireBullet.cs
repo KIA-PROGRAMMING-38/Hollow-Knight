@@ -7,7 +7,7 @@ public class FireBullet : MonoBehaviour
     
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Monster"))
         {
             //TODO : 스킬 데미지 수치 및 히트 이펙트 추가는 몬스터 구현과 같이 예정
             Debug.Log("40 데미지를 입혔습니다.");

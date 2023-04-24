@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class WanderingHusk : MonsterController
 {
+    [SerializeField] private UIManager uiManager;
     private void Awake()
     {
         base.Awake();
@@ -34,6 +35,7 @@ public class WanderingHusk : MonsterController
                 col.enabled = false;
                 rigid.simulated = false;
                 spriteRenderer.sortingOrder = -1;
+                uiManager.AcquisitionMpIcon(0.3f);
             }
 
         }

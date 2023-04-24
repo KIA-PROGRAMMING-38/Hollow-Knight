@@ -25,27 +25,13 @@ public class RunState : StateMachineBehaviour
             animator.SetBool("isRunning", false);
             animator.SetBool("Idle", true);
         }
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            player.StartCoroutine(ChangeAnimation(animator));
-        }
 
         if (Input.GetKeyDown(KeyCode.C))
         {
             animator.SetBool("isRunning", false);
             animator.SetBool("isDash", true);
         }
-
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            if (Input.GetKey(KeyCode.UpArrow))
-            {
-                animator.SetTrigger("isUpSlash");
-                return;
-            }
-            animator.SetTrigger("isSlash");
-        }
-
+        
         if (Input.GetKeyDown(KeyCode.A))
         {
             keyDownTime = Time.time;
@@ -72,16 +58,6 @@ public class RunState : StateMachineBehaviour
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         
-    }
-
-    private IEnumerator ChangeAnimation(Animator animator)
-    {
-        while (Input.GetKeyDown(KeyCode.Z))
-        {
-            animator.SetBool("isRunning", false);
-            animator.SetBool("isJump", true);
-            yield return new WaitForSeconds(0.2f);
-        }
     }
 
 }

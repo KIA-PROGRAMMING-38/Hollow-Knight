@@ -21,26 +21,10 @@ public class IdleState : StateMachineBehaviour
             animator.SetBool("Idle", false);
         }
 
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            player.StartCoroutine(ChangeAnimation(animator));
-        }
-
         if (Input.GetKeyDown(KeyCode.C))
         {
             animator.SetBool("Idle", false);
             animator.SetBool("isDash", true);
-        }
-
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            if (Input.GetKey(KeyCode.UpArrow))
-            {
-                animator.SetTrigger("isUpSlash");
-                return;
-            }
-
-            animator.SetTrigger("isSlash");
         }
 
         if (Input.GetKeyDown(KeyCode.A))
@@ -72,14 +56,5 @@ public class IdleState : StateMachineBehaviour
     {
         
     }
-
-    private IEnumerator ChangeAnimation(Animator animator)
-    {
-        while (Input.GetKeyDown(KeyCode.Z))
-        {
-            animator.SetBool("Idle", false);
-            animator.SetBool("isJump", true);
-            yield return new WaitForSeconds(0.2f);
-        }
-    }
+    
 }

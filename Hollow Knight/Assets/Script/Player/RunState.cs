@@ -32,26 +32,11 @@ public class RunState : StateMachineBehaviour
             animator.SetBool("isDash", true);
         }
         
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            keyDownTime = Time.time;
-            isHeal = false;
-        }
+       
 
-        if (Input.GetKey(KeyCode.A))
-        {
-            if (Time.time - keyDownTime >= 0.5f)
-            {
-                animator.SetBool("Idle", false);
-                animator.SetBool("isHeal", true);
-                isHeal = true;
-            }
-        }
+       
 
-        if (Input.GetKeyUp(KeyCode.A) && !isHeal)
-        {
-            animator.SetTrigger("isFireBall");
-        }
+        
     }
 
 

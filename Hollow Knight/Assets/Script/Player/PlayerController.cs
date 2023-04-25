@@ -1,13 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using TMPro.EditorUtilities;
-using Unity.VisualScripting;
-using UnityEditor;
-using UnityEditor.Build;
-using UnityEditor.Rendering;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
@@ -17,57 +10,52 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform pos;
     [SerializeField] private float checkRadious;
     [SerializeField] private LayerMask islayer;
+    [SerializeField] private Transform bulletSpawn;
     [SerializeField] private UIManager uiManager;
     
     private int moveDirection;
 
-    private bool isGround;
-    private bool isJumping;
-    private float jumpTimeCounter;
-    private float jumpTime;
-    private int jumpCount;
-
-    private bool skillCoolTime;
-    private bool isDash;
-    private float dashSpeed;
-    private float dashTime;
-
-    private float slashTime;
-
-    private float keyDownTime;
-    private bool isHeal;
-    private bool isHealRunning;
+    internal bool isGround;
+    internal bool isJumping;
+    internal float jumpTimeCounter;
+    internal float jumpTime;
+    internal int jumpCount;
+    
+    internal bool isSkill;
+    internal bool isDash;
+    internal float dashSpeed;
+    internal float dashTime;
 
     private int life;
 
     private SlashEffect _slashEffect;
     private UpSlashEffect _upSlashEffect;
     private DownSlashEffect _downSlashEffect;
+    private FireBallEffect _fireballEffect;
+    private DashEffect _dashEffect;
+
     private Animator anim;
     internal Rigidbody2D rigid;
     private SpriteRenderer spriteRenderer;
-    private Collider2D col;
-    
-    
-    
+
     void Start()
     {
         anim = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        col = GetComponent<Collider2D>();
         _slashEffect = GetComponentInChildren<SlashEffect>();
         _upSlashEffect = GetComponentInChildren<UpSlashEffect>();
         _downSlashEffect = GetComponentInChildren<DownSlashEffect>();
+        _fireballEffect = GetComponentInChildren<FireBallEffect>();
+        _dashEffect = GetComponentInChildren<DashEffect>();
 
 
         jumpTime = 0.5f;
-        skillCoolTime = true;
-        dashSpeed = 24f;
-        dashTime = 0.2f;
-        slashTime = 0.3f;
-        keyDownTime = 0f;
+        isSkill = true;
+        dashSpeed = 30f;
+        dashTime = 0.5f;
         life = 5;
+        
     }
 
     void FixedUpdate()
@@ -79,29 +67,32 @@ public class PlayerController : MonoBehaviour
         Flip();
         Jump();
         SlashActive();
+        SkillActive();
     }
 
     // 스킬 활성화
     private void SkillActive()
     {
-        
-        //if (Input.GetKey(KeyCode.C) && skillCoolTime)
-        //{   
-        //    StartCoroutine(Dash());
-        //}
-        
-        if (Input.GetKeyDown(KeyCode.A) && skillCoolTime)
+        if (Input.GetKeyDown(KeyCode.C))
         {
-            keyDownTime = Time.time;
-            isHeal = false;
+            StartCoroutine(Dash());
         }
 
-        //if (Input.GetKeyUp(KeyCode.A) && !isHeal)
-        //{
-        //    StartCoroutine(FireBall());
-        //    StartCoroutine(SkillBullet());
-        //}
+        if (Input.GetKeyDown(KeyCode.A) && isSkill)
+        {
+            // 마나 없을 때 스킬 사용 불가
+            if (uiManager.mpImage.fillAmount < 0.1f)
+                return;
+
+            anim.SetTrigger("isFireBall");
+            StartCoroutine(SkillBullet());
+            // 스킬 사용 후 마나 감소
+            uiManager.ConsumptionMpIcon(0.3f);
+        }
+        
     }
+    private void ShowFireBallEffect() => _fireballEffect.Show();
+    private void ShowDashEffect() => _dashEffect.Show();
 
     // 공격 활성화
     private void SlashActive()
@@ -132,6 +123,7 @@ public class PlayerController : MonoBehaviour
         // 대쉬 중 이동을 하지 않는다.
         if (isDash)
             return;
+
         if (Input.GetKey(KeyCode.LeftArrow) && Input.GetKey(KeyCode.RightArrow))
         {
             // 움직이지 않는다.
@@ -151,6 +143,8 @@ public class PlayerController : MonoBehaviour
     }
     void Flip()
     {
+        if (isDash)
+            return;
         if (Input.GetKey(KeyCode.LeftArrow))
                 transform.localScale = new Vector3(1f, 1f, 1f);
         else if (Input.GetKey(KeyCode.RightArrow))
@@ -160,7 +154,7 @@ public class PlayerController : MonoBehaviour
     void Jump()
     {
         // 대쉬 중 점프를 하지 않는다.
-        if (isDash) 
+        if (isDash)
             return;
 
         // 지면을 확인
@@ -220,106 +214,50 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+    IEnumerator Dash()
+    {
+        float originalGravity = rigid.gravityScale;
+        // 중력 삭제
+        rigid.gravityScale = 0f;
+        isDash = true;
+        
+        if (transform.localScale.x == -1)
+            rigid.velocity = Vector2.right * dashSpeed;
+        else
+            rigid.velocity = Vector2.left * dashSpeed;
 
-    //IEnumerator Dash()
-    //{
-    //    // 중력 삭제
-    //    float originalGravity = rigid.gravityScale;
-    //    rigid.gravityScale = 0f;
-
-    //    skillCoolTime = false;
-    //    isDash = true;
-
-
-    //    if(rigid.velocity.x == 0)
-    //    {
-    //        if (transform.localScale.x == -1)
-    //            rigid.velocity = new Vector2(transform.localScale.x * (-1) * dashSpeed, 0f);
-    //        else
-    //            rigid.velocity = new Vector2(transform.localScale.x * (-1) * dashSpeed, 0f);
-    //    }
-
-    //    else
-    //    {
-    //        rigid.velocity = new Vector2(moveDirection * dashSpeed, 0f);
-    //    }
-
-    //    // 대쉬 이펙트 생성
-    //    GameObject dash = ObjectManager.instance.DashPooledObject();
-    //    if (dash != null)
-    //    {
-    //        dash.transform.position = effectPosition.position;
-    //        Vector3 scale = dash.transform.localScale;
-    //        scale.x = transform.localScale.x;
-    //        dash.transform.localScale = scale;
-    //        dash.SetActive(true);
-    //    }
-    //    GameObject dashSecond = ObjectManager.instance.DashPooledObject();
-    //    if(dashSecond != null)
-    //    {
-    //        dashSecond.transform.position = effectPosition.position;
-    //        Vector3 scale = dashSecond.transform.localScale;
-    //        scale.x = transform.localScale.x * (-1);
-    //        dashSecond.transform.localScale = scale;
-    //        dashSecond.SetActive(true);
-    //    }
-
-    //    yield return new WaitForSeconds(dashTime);
-    //    rigid.gravityScale = originalGravity;
-    //    isDash = false;
-    //    dash.SetActive(false);
-    //    dashSecond.SetActive(false);
-    //    yield return new WaitForSeconds(0.5f);
-    //    skillCoolTime = true;
-    //}
+        yield return new WaitForSeconds(dashTime);
+        rigid.gravityScale = originalGravity;
+        rigid.velocity = Vector2.zero;
+        isDash = false;
+    }
 
 
+    IEnumerator SkillBullet()
+    {
+        float bulletTime = 0.4f;
+        float bulletSpeed = 50f;
+        isSkill = false;
+        // 스킬 불렛 생성
+        GameObject bullet = ObjectManager.instance.BulletPooledObject();
+        if (bullet != null)
+        {
+            bullet.transform.position = bulletSpawn.position;
+            Vector3 scale = bullet.transform.localScale;
+            scale.x = transform.localScale.x * (-1);
+            bullet.transform.localScale = scale;
+            bullet.SetActive(true);
+        }
 
-    //IEnumerator FireBall()
-    //{
-    //    float skillTime = 0.3f;
-    //    skillCoolTime = false;
-    //    // 스킬 이펙트 생성
-    //    GameObject skill = ObjectManager.instance.SkillPooledObject();
-    //    if(skill != null)
-    //    {
-    //        skill.transform.position = skillPosition.position;
-    //        Vector3 scale = skill.transform.localScale;
-    //        scale.x = transform.localScale.x * (-1);
-    //        skill.transform.localScale = scale;
-    //        skill.SetActive(true);
-    //    }
-
-    //    // 스킬 사용 후 마나 감소
-    //    uiManager.ConsumptionMpIcon(0.3f);
-    //    yield return new WaitForSeconds(skillTime);
-    //    skill.SetActive(false);
-    //    skillCoolTime = true;
-    //}
-    //IEnumerator SkillBullet()
-    //{
-    //    float bulletTime = 1f;
-    //    float bulletSpeed = 30f;
-    //    // 스킬 불렛 생성
-    //    GameObject bullet = ObjectManager.instance.SkillBulletPooledObject();
-    //    if (bullet != null)
-    //    {
-    //        bullet.transform.position = skillPosition.position;
-    //        Vector3 scale = bullet.transform.localScale;
-    //        scale.x = transform.localScale.x * (-1);
-    //        bullet.transform.localScale = scale;
-    //        bullet.SetActive(true);
-    //    }
-
-    //    if(transform.localScale.x < 0)
-    //        bullet.transform.GetComponent<Rigidbody2D>().velocity = Vector3.right * bulletSpeed;
-    //    else
-    //        bullet.transform.GetComponent<Rigidbody2D>().velocity = Vector3.left * bulletSpeed;
-
-    //    yield return new WaitForSeconds(bulletTime);
-    //    bullet.SetActive(false);
-    //}
-
+        if (transform.localScale.x < 0)
+            bullet.transform.GetComponent<Rigidbody2D>().velocity = Vector3.right * bulletSpeed;
+        else
+            bullet.transform.GetComponent<Rigidbody2D>().velocity = Vector3.left * bulletSpeed;
+        yield return new WaitForSeconds(bulletTime);
+        bullet.SetActive(false);
+        isSkill = true;
+    }
+    
     private void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.transform.CompareTag("Monster"))

@@ -7,18 +7,6 @@ public class UIManager : MonoBehaviour
 {
     public Image[] lifeImage;
     public Image mpImage;
-    private int maxMp = 100;
-    
-    void Start()
-    {
-        
-    }
-
-    
-    void Update()
-    {
-        
-    }
     
     public void UpdateLifeIcon(int life)
     {
@@ -34,10 +22,6 @@ public class UIManager : MonoBehaviour
     public void ConsumptionMpIcon(float mp)
     {
         mpImage.fillAmount -= mp;
-        if(mpImage.fillAmount < 0.1f)
-        {
-           // 마나가 떨어지면 스킬 사용 불가능 
-        }
     }
     public void AcquisitionMpIcon(float mp)
     {

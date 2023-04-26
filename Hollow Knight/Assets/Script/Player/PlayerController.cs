@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
@@ -27,6 +28,7 @@ public class PlayerController : MonoBehaviour
     internal float dashSpeed;
     internal float dashTime;
 
+    private bool immortal;
     private int life;
 
     private SlashEffect _slashEffect;
@@ -50,7 +52,7 @@ public class PlayerController : MonoBehaviour
         _fireballEffect = GetComponentInChildren<FireBallEffect>();
         _dashEffect = GetComponentInChildren<DashEffect>();
 
-
+        immortal = true;
         jumpTime = 0.5f;
         isSkill = true;
         dashSpeed = 30f;
@@ -116,8 +118,6 @@ public class PlayerController : MonoBehaviour
     private void ShowSlashEffect() => _slashEffect.Show();
     private void ShowUpSlashEffect() => _upSlashEffect.Show();
     private void ShowDownSlashEffect() => _downSlashEffect.Show();
-    
-        
     
     void Move()
     {
@@ -263,6 +263,32 @@ public class PlayerController : MonoBehaviour
         isSkill = true;
     }
     
+    IEnumerator TimeDelay()
+    {
+        // 무적상태
+        immortal = false;
+        // 시간 정지
+        Time.timeScale = 0f;
+        yield return new WaitForSecondsRealtime(0.3f);
+        Time.timeScale = 1f;
+        // 몬스터에게 피격 시 넉백
+        if (transform.rotation.y == 0)
+            transform.Translate(Vector2.left * 20f * Time.deltaTime);
+        else
+            transform.Translate(Vector2.left * 20f * (-1) * Time.deltaTime);
+        yield return new WaitForSecondsRealtime(0.3f);
+        rigid.velocity = Vector2.zero;
+        //무적 시간
+        yield return new WaitForSeconds(2f);
+        immortal = true;
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.transform.CompareTag("Monster") && immortal)
+        {
+            StartCoroutine(TimeDelay());
+        }
+    }
     private void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.transform.CompareTag("Monster"))

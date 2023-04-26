@@ -240,7 +240,7 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator SkillBullet()
     {
-        float bulletTime = 0.4f;
+        float bulletTime = 0.5f;
         float bulletSpeed = 50f;
         isSkill = false;
         // 스킬 불렛 생성

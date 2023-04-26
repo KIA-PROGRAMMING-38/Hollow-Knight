@@ -6,7 +6,7 @@ using UnityEngine;
 public class JumpState : StateMachineBehaviour
 {
     PlayerController player;
-    private int jumpCount;
+    
     
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {

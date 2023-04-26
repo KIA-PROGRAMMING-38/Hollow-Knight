@@ -17,8 +17,9 @@ public class PlayerController : MonoBehaviour
 
     internal bool isGround;
     internal bool isJumping;
-    internal float jumpTimeCounter;
+    internal int dashCount;
     internal float jumpTime;
+    internal float jumpTimeCounter;
     internal int jumpCount;
     
     internal bool isSkill;
@@ -73,7 +74,7 @@ public class PlayerController : MonoBehaviour
     // 스킬 활성화
     private void SkillActive()
     {
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.C) && dashCount == 1)
         {
             StartCoroutine(Dash());
         }
@@ -163,9 +164,13 @@ public class PlayerController : MonoBehaviour
         if (isGround)
         {
             jumpCount = 1;
+            // 점프 중 대쉬 한번만 사용
+            dashCount = 1;
             anim.SetBool("isJump", false);
             anim.SetBool("isJumpDown", false);
-            anim.SetBool("Idle", true);
+
+            if(rigid.velocity.x == 0)
+                anim.SetBool("Idle", true);
         }
         
         else if (!isGround)
@@ -220,6 +225,7 @@ public class PlayerController : MonoBehaviour
         // 중력 삭제
         rigid.gravityScale = 0f;
         isDash = true;
+        dashCount--;
         
         if (transform.localScale.x == -1)
             rigid.velocity = Vector2.right * dashSpeed;
@@ -231,7 +237,6 @@ public class PlayerController : MonoBehaviour
         rigid.velocity = Vector2.zero;
         isDash = false;
     }
-
 
     IEnumerator SkillBullet()
     {

@@ -13,19 +13,16 @@ public class IdleState : StateMachineBehaviour
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow))
+        if(Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            animator.SetTrigger("isRunStart");
             animator.SetBool("Idle", false);
+            animator.SetTrigger("isRunStart");
         }
-
         if (Input.GetKeyDown(KeyCode.C))
         {
             animator.SetBool("Idle", false);
             animator.SetBool("isDash", true);
         }
-
-        
     }
 
 

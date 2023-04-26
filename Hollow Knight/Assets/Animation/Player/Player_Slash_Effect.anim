@@ -21,21 +21,21 @@ AnimationClip:
   - curve:
     - time: 0
       value: {fileID: -840065930, guid: 81c216546eaf54844880920a68db677b, type: 3}
-    - time: 0.083333336
+    - time: 0.05
       value: {fileID: 391857985, guid: 81c216546eaf54844880920a68db677b, type: 3}
-    - time: 0.16666667
+    - time: 0.1
       value: {fileID: 1954485857, guid: 81c216546eaf54844880920a68db677b, type: 3}
-    - time: 0.25
+    - time: 0.15
       value: {fileID: 1028817755, guid: 81c216546eaf54844880920a68db677b, type: 3}
-    - time: 0.33333334
+    - time: 0.2
       value: {fileID: -1965394222, guid: 81c216546eaf54844880920a68db677b, type: 3}
-    - time: 0.41666666
+    - time: 0.25
       value: {fileID: 1323435930, guid: 81c216546eaf54844880920a68db677b, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
     script: {fileID: 0}
-  m_SampleRate: 12
+  m_SampleRate: 20
   m_WrapMode: 0
   m_Bounds:
     m_Center: {x: 0, y: 0, z: 0}
@@ -61,7 +61,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.5
+    m_StopTime: 0.3
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -80,4 +80,11 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0.25
+    functionName: HideSlashEffect
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

@@ -7,18 +7,6 @@ public class UIManager : MonoBehaviour
 {
     public Image[] lifeImage;
     public Image mpImage;
-    private int maxMp = 100;
-    
-    void Start()
-    {
-        
-    }
-
-    
-    void Update()
-    {
-        
-    }
     
     public void UpdateLifeIcon(int life)
     {

@@ -5,39 +5,11 @@ using UnityEngine;
 public class ObjectManager : MonoBehaviour
 {
     public static ObjectManager instance;
-
-    private List<GameObject> dashEffectPool = new List<GameObject>();
-    private List<GameObject> dashSecondEffectPool = new List<GameObject>();
-    private int dashEffect = 1;
-    private int dashSecondEffect = 1;
-
-    private List<GameObject> slashEffectPool = new List<GameObject>();
-    private List<GameObject> slashUpEffectPool = new List<GameObject>();
-    private List<GameObject> slashDownEffectPool = new List<GameObject>();
-    private int slashEffect = 2;
-    private int slashUpEffect = 2;
-    private int slashDownEffect = 2;
-
-    private List<GameObject> skillEffectPool = new List<GameObject>();
-    private List<GameObject> skillBulletPool = new List<GameObject>();
-    private int skillEffect = 2;
-    private int skillBullet = 5;
-
-    private List<GameObject> healEffectPool = new List<GameObject>();
-    private int healEffect = 2;
-
-    private List<GameObject> doubleJumpEffectPool = new List<GameObject>();
-    private int doubleJumpEffect = 2;
-
-    [SerializeField] private GameObject dashEffectPrefab;
-    [SerializeField] private GameObject dashSecondEffectPrefab;
-    [SerializeField] private GameObject slashEffectPrefab;
-    [SerializeField] private GameObject slashUpEffectPrefab;
-    [SerializeField] private GameObject slashDownEffectPrefab;
-    [SerializeField] private GameObject skillEffectPrefab;
+    
     [SerializeField] private GameObject skillBulletPrefab;
-    [SerializeField] private GameObject healEffectPrefab;
-    [SerializeField] private GameObject doubleJumpEffectPrefab;
+    private List<GameObject> bulletPool = new List<GameObject>();
+    private int bullet = 5;
+    
 
     private void Awake()
     {
@@ -49,187 +21,30 @@ public class ObjectManager : MonoBehaviour
 
     private void Start()
     {
-        Dash();
-        Attack();
-        UpAttack();
-        DownAttack();
-        Skill();
-        SkillBullet();
-        HealEffect();
-        DoubleJump();
+        Bullet();
     }
 
-    private void Dash()
+    private void Bullet()
     {
-        for (int index = 0; index < dashEffect; ++index)
-        {
-            GameObject obj = Instantiate(dashEffectPrefab);
-            obj.SetActive(false);
-            dashEffectPool.Add(obj);
-        }
-        for (int index = 0; index < dashSecondEffect; ++index)
-        {
-            GameObject obj = Instantiate(dashSecondEffectPrefab);
-            obj.SetActive(false);
-            dashSecondEffectPool.Add(obj);
-        }
-    }
-    public GameObject DashPooledObject()
-    {
-        for(int index = 0; index < dashEffectPool.Count; ++index)
-        {
-            if (!dashEffectPool[index].activeInHierarchy)
-            {
-                return dashEffectPool[index];
-            }
-            
-            else if (!dashSecondEffectPool[index].activeInHierarchy)
-            {
-                return dashSecondEffectPool[index];
-            }
-        }
-
-        return null;
-    }
-
-    private void Attack()
-    {
-        for(int index = 0; index < slashEffect; ++index)
-        {
-            GameObject obj = Instantiate(slashEffectPrefab);
-            obj.SetActive(false);
-            slashEffectPool.Add(obj);
-        }
-    }
-    private void UpAttack()
-    {
-        for(int index = 0; index < slashUpEffect; ++index)
-        {
-            GameObject obj = Instantiate(slashUpEffectPrefab);
-            obj.SetActive(false);
-            slashUpEffectPool.Add(obj);
-        }
-    }
-    private void DownAttack()
-    {
-        for(int index = 0; index < slashDownEffect; ++index)
-        {
-            GameObject obj = Instantiate(slashDownEffectPrefab);
-            obj.SetActive(false);
-            slashDownEffectPool.Add(obj);
-        }
-    }
-    private void Skill()
-    {
-        for(int index = 0; index < skillEffect; ++index)
-        {
-            GameObject obj = Instantiate(skillEffectPrefab);
-            obj.SetActive(false);
-            skillEffectPool.Add(obj);
-        }
-    }
-    private void SkillBullet()
-    {
-        for(int index = 0; index < skillBullet; ++index)
+        for (int index = 0; index < bullet; ++index)
         {
             GameObject obj = Instantiate(skillBulletPrefab);
             obj.SetActive(false);
-            skillBulletPool.Add(obj);
+            bulletPool.Add(obj);
         }
     }
-    private void HealEffect()
+    
+    public GameObject BulletPooledObject()
     {
-        for(int index = 0; index < healEffect; ++index)
+        for(int index = 0; index < bulletPool.Count; ++index)
         {
-            GameObject obj = Instantiate(healEffectPrefab);
-            obj.SetActive(false);
-            healEffectPool.Add(obj);
-        }
-    }
-    private void DoubleJump()
-    {
-        for(int index = 0; index < doubleJumpEffect; ++index)
-        {
-            GameObject obj = Instantiate(doubleJumpEffectPrefab);
-            obj.SetActive(false);
-            doubleJumpEffectPool.Add(obj);
-        }
-    }
-    public GameObject SlashPooledObject()
-    {
-        for(int index = 0; index < slashEffectPool.Count; ++index)
-        {
-            if (!slashEffectPool[index].activeInHierarchy)
+            if (!bulletPool[index].activeInHierarchy)
             {
-                return slashEffectPool[index];
+                return bulletPool[index];
             }
         }
         return null;
     }
-    public GameObject SlashUpPooledObject()
-    {
-        for(int index = 0; index < slashUpEffectPool.Count; ++index)
-        {
-            if (!slashUpEffectPool[index].activeInHierarchy)
-            {
-                return slashUpEffectPool[index];
-            }
-        }
-        return null;    
-    }
-    public GameObject SlashDownPooledObject()
-    {
-        for(int index = 0; index < slashDownEffectPool.Count; ++index)
-        {
-            if (!slashDownEffectPool[index].activeInHierarchy)
-            {
-                return slashDownEffectPool[index];
-            }
-        }
-        return null;
-    }
-    public GameObject SkillPooledObject()
-    {
-        for(int index = 0; index < skillEffectPool.Count; ++index)
-        {
-            if (!skillEffectPool[index].activeInHierarchy)
-            {
-                return skillEffectPool[index];
-            }
-        }
-        return null;
-    }
-    public GameObject SkillBulletPooledObject()
-    {
-        for(int index = 0; index < skillBulletPool.Count; ++index)
-        {
-            if (!skillBulletPool[index].activeInHierarchy)
-            {
-                return skillBulletPool[index];
-            }
-        }
-        return null;
-    }
-    public GameObject HealEffectPooledObject()
-    {
-        for(int index = 0; index < healEffectPool.Count; ++index)
-        {
-            if (!healEffectPool[index].activeInHierarchy)
-            {
-                return healEffectPool[index];
-            }
-        }
-        return null;
-    }
-    public GameObject DoubleJumpEffectPooledObject()
-    {
-        for(int index = 0; index < doubleJumpEffectPool.Count; ++index)
-        {
-            if (!doubleJumpEffectPool[index].activeInHierarchy)
-            {
-                return doubleJumpEffectPool[index];
-            }
-        }
-        return null;
-    }
+   
+  
 }

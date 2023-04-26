@@ -6,8 +6,6 @@ using UnityEngine;
 public class IdleState : StateMachineBehaviour
 {
     PlayerController player;
-    private bool isHeal = false;
-    private float keyDownTime = 0f;
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         player = animator.GetComponent<PlayerController>();
@@ -15,56 +13,16 @@ public class IdleState : StateMachineBehaviour
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow))
+        if(Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            animator.SetTrigger("isRunStart");
             animator.SetBool("Idle", false);
+            animator.SetTrigger("isRunStart");
         }
-
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            player.StartCoroutine(ChangeAnimation(animator));
-        }
-
         if (Input.GetKeyDown(KeyCode.C))
         {
             animator.SetBool("Idle", false);
             animator.SetBool("isDash", true);
         }
-
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            if (Input.GetKey(KeyCode.UpArrow))
-            {
-                animator.SetTrigger("isUpSlash");
-                return;
-            }
-
-            animator.SetTrigger("isSlash");
-        }
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            keyDownTime = Time.time;
-            isHeal = false;
-        }
-
-        if(Input.GetKey(KeyCode.A))
-        {
-            if(Time.time - keyDownTime >= 0.5f)
-            {
-                animator.SetBool("Idle", false);
-                animator.SetBool("isHeal", true);
-                isHeal = true;
-            }
-        }
-
-        if(Input.GetKeyUp(KeyCode.A) && !isHeal)
-        {
-            animator.SetTrigger("isFireBall");
-        }
-
-            
     }
 
 
@@ -72,14 +30,5 @@ public class IdleState : StateMachineBehaviour
     {
         
     }
-
-    private IEnumerator ChangeAnimation(Animator animator)
-    {
-        while (Input.GetKeyDown(KeyCode.Z))
-        {
-            animator.SetBool("Idle", false);
-            animator.SetBool("isJump", true);
-            yield return new WaitForSeconds(0.2f);
-        }
-    }
+    
 }

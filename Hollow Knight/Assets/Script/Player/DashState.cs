@@ -5,6 +5,7 @@ using UnityEngine;
 public class DashState : StateMachineBehaviour
 {
     PlayerController player;
+    
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         player = animator.GetComponent<PlayerController>();
@@ -13,12 +14,10 @@ public class DashState : StateMachineBehaviour
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (player.rigid.gravityScale != 0)
+        if (Input.GetKeyUp(KeyCode.C))
         {
             animator.SetBool("isDash", false);
-            animator.SetBool("isRunning", true);
         }
-        
     }
 
 

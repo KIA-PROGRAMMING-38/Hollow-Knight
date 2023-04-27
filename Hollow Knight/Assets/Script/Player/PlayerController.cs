@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
@@ -27,6 +28,7 @@ public class PlayerController : MonoBehaviour
     internal float dashSpeed;
     internal float dashTime;
 
+    private bool immortal;
     private int life;
 
     private SlashEffect _slashEffect;
@@ -34,6 +36,7 @@ public class PlayerController : MonoBehaviour
     private DownSlashEffect _downSlashEffect;
     private FireBallEffect _fireballEffect;
     private DashEffect _dashEffect;
+    private DamageFirstEffect _damageFirstEffect;
 
     private Animator anim;
     internal Rigidbody2D rigid;
@@ -49,8 +52,9 @@ public class PlayerController : MonoBehaviour
         _downSlashEffect = GetComponentInChildren<DownSlashEffect>();
         _fireballEffect = GetComponentInChildren<FireBallEffect>();
         _dashEffect = GetComponentInChildren<DashEffect>();
+        _damageFirstEffect = GetComponentInChildren<DamageFirstEffect>();
 
-
+        immortal = true;
         jumpTime = 0.5f;
         isSkill = true;
         dashSpeed = 30f;
@@ -116,8 +120,6 @@ public class PlayerController : MonoBehaviour
     private void ShowSlashEffect() => _slashEffect.Show();
     private void ShowUpSlashEffect() => _upSlashEffect.Show();
     private void ShowDownSlashEffect() => _downSlashEffect.Show();
-    
-        
     
     void Move()
     {
@@ -262,15 +264,35 @@ public class PlayerController : MonoBehaviour
         bullet.SetActive(false);
         isSkill = true;
     }
+    private void OnDamage() => _damageFirstEffect.Show();
     
-    private void OnCollisionExit2D(Collision2D collision)
+    IEnumerator TimeDelay()
     {
-        if (collision.transform.CompareTag("Monster"))
+        // 무적상태
+        immortal = false;
+        anim.SetTrigger("isDamage");
+        // 시간 정지
+        Time.timeScale = 0f;
+        yield return new WaitForSecondsRealtime(0.3f);
+        Time.timeScale = 1f;
+        // 몬스터에게 피격 시 넉백
+        if (transform.localScale.x == -1)
+            rigid.velocity = Vector2.left * 25f;
+        else
+            rigid.velocity = Vector2.right * 25f;
+        yield return new WaitForSecondsRealtime(0.3f);
+        rigid.velocity = Vector2.zero;
+        //무적 시간
+        yield return new WaitForSeconds(2f);
+        immortal = true;
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.transform.CompareTag("Monster") && immortal)
         {
             life--;
             uiManager.UpdateLifeIcon(life);
+            StartCoroutine(TimeDelay());
         }
     }
-
-
 }

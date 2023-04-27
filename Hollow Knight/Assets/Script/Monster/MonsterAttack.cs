@@ -19,7 +19,7 @@ public class MonsterAttack : StateMachineBehaviour
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         monster.Flip(monster.target.position.x, monsterTransform.position.x);
-        monsterTransform.position = Vector2.MoveTowards(monsterTransform.position, monster.target.position, monster.attackSpeed * Time.deltaTime);
+        //monsterTransform.position = Vector2.MoveTowards(monsterTransform.position, monster.target.position, monster.attackSpeed * Time.deltaTime);
     }
 
 

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3487113071213072793}
   - component: {fileID: 3487113071213072792}
   - component: {fileID: 6813060633574400339}
+  - component: {fileID: 8557406422375000355}
   m_Layer: 0
   m_Name: HitEffect
   m_TagString: Untagged
@@ -119,3 +120,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb2b92d51a3073548ab813de645e1754, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8557406422375000355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3487113071213072795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0662802081d8c6142827353b04f0585a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCamera: {fileID: 0}
+  shakeRange: 0.05
+  duration: 0.5

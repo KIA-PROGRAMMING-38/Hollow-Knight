@@ -5,40 +5,30 @@ using UnityEngine;
 public class Gruzzer : MonsterController
 {
     private float temporaryGravity = 2f;
-    [SerializeField] private UIManager uiManager;
+    
     private void Awake()
     {
         base.Awake();
         moveSpeed = 6f;
-        attackSpeed = 8f;
+        attackSpeed = 7f;
+        attackRange = 7f;
         monsterHealth = 60;
         hitDamage = 20;
-        attackRange = 8f;
+        
     }
-
+    private void Update()
+    {
+        if (monsterHealth > 0)
+            AttackDistance();
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Weapon"))
-        {
-            // 데미지를 입었을 때
-            Damage(hitDamage);
-        }
+        base.OnTriggerEnter2D(collision);
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Weapon"))
-        {
-            // 처치되었을 때
-            if (monsterHealth == 0)
-            {
-                anim.SetTrigger("Die");
-                col.enabled = false;
-                rigid.simulated = false;
-                uiManager.AcquisitionMpIcon(0.3f);
-            }
-
-        }
+        base.OnTriggerExit2D(collision);
     }
 
 }

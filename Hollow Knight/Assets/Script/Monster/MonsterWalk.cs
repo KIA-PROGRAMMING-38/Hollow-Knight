@@ -16,7 +16,7 @@ public class MonsterWalk : StateMachineBehaviour
     internal Vector3 nextPoint;
     internal int currentPointIndex = 0;
     internal float elapsedTime;
-    
+
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         monster = animator.GetComponent<MonsterController>();
@@ -31,8 +31,6 @@ public class MonsterWalk : StateMachineBehaviour
         float step = monster.moveSpeed * delta;
         elapsedTime += delta;
 
-        Attack(animator);
-
         if (elapsedTime >= patrolSec)
         {
             animator.SetBool("Walk", false);
@@ -41,7 +39,7 @@ public class MonsterWalk : StateMachineBehaviour
         }
 
         monsterTransform.position = Vector3.MoveTowards(monster.transform.position, nextPoint, step);
-        if(Vector3.Distance(monster.transform.position, nextPoint) < 0.1f)
+        if (Vector3.Distance(monster.transform.position, nextPoint) < 0.1f)
         {
             SetNextPoint();
         }
@@ -63,17 +61,5 @@ public class MonsterWalk : StateMachineBehaviour
         SetNextPoint();
         elapsedTime = 0f;
     }
-    private void Attack(Animator anim)
-    {
-        Vector2 direction = monster.target.position - monsterTransform.position;
-        float distance = direction.magnitude;
-        if (distance <= monster.attackRange)
-        {
-            anim.SetBool("Idle", false);
-            anim.SetBool("Walk", false);
-            anim.SetTrigger("Attack");
-            monster.Flip(monster.target.position.x, monsterTransform.position.x);
-        }
-        return;
-    }
 }
+

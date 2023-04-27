@@ -272,10 +272,10 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSecondsRealtime(0.3f);
         Time.timeScale = 1f;
         // 몬스터에게 피격 시 넉백
-        if (transform.rotation.y == 0)
-            transform.Translate(Vector2.left * 20f * Time.deltaTime);
+        if (transform.localScale.x == -1)
+            rigid.AddForce(Vector2.left * 10f * Time.deltaTime);
         else
-            transform.Translate(Vector2.left * 20f * (-1) * Time.deltaTime);
+            rigid.AddForce(Vector2.left * 10f * (-1) * Time.deltaTime);
         yield return new WaitForSecondsRealtime(0.3f);
         rigid.velocity = Vector2.zero;
         //무적 시간

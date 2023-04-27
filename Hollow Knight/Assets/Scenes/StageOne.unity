@@ -1310,10 +1310,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 0.5
+  m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 2
+  m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 1
   m_SleepingMode: 1
@@ -1347,11 +1347,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 564ebbce7303a2344b9f16197bf83de2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiManager: {fileID: 754240171}
   target: {fileID: 626267016}
   patrolPoints:
   - {fileID: 13351182}
   - {fileID: 191170135}
-  uiManager: {fileID: 754240171}
 --- !u!95 &346174892
 Animator:
   serializedVersion: 5
@@ -3894,11 +3894,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 826c26daaedbfe74caa4d1251a9074c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiManager: {fileID: 754240171}
   target: {fileID: 626267016}
   patrolPoints:
   - {fileID: 1413707080}
   - {fileID: 1045513441}
-  uiManager: {fileID: 754240171}
 --- !u!50 &883254594
 Rigidbody2D:
   serializedVersion: 4
@@ -12441,11 +12441,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e913fc0307640e4ab1bfa4055523155, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiManager: {fileID: 754240171}
   target: {fileID: 626267016}
   patrolPoints:
   - {fileID: 986011822}
   - {fileID: 1779204921}
-  uiManager: {fileID: 754240171}
 --- !u!1001 &1768450647
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -10,17 +10,11 @@ public class BossController : MonoBehaviour
     // 체력 절반 이 되기 전에는 패턴이 정형화 절반 이하에는 랜덤
     // 체력 500 이라면 100 마다 스턴 효과
     public int bossHealth;
-    private bool isJump;
     public int jumpForce;
     public int moveSpeed;
-    private float stunElapsedTime;
     private int playerDamage;
-    private bool isDie;
-    [SerializeField] private Transform pos;
-    [SerializeField] private float checkRadious;
-    [SerializeField] private LayerMask islayer;
-    //public Transform target;
-
+   
+    public Transform target;
     private BossAttack _bossAttack;
     private UIManager ui;
     
@@ -29,7 +23,7 @@ public class BossController : MonoBehaviour
     internal Rigidbody2D rigid;
     private Material originmaterial;
     public Material material;
-    private SpriteRenderer spriteRenderer;
+    internal SpriteRenderer spriteRenderer;
 
     private void Awake()
     {
@@ -41,13 +35,7 @@ public class BossController : MonoBehaviour
         _bossAttack = GetComponentInChildren<BossAttack>();
 
         playerDamage = 20;
-        stunElapsedTime = 0f;
         originmaterial = spriteRenderer.material;
-        isDie = true;
-    }
-
-    private void Update()
-    {
         
     }
 

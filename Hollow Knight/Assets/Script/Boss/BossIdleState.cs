@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 
 public class BossIdleState : StateMachineBehaviour
@@ -14,6 +15,7 @@ public class BossIdleState : StateMachineBehaviour
     {
         boss = animator.GetComponent<BossController>();
         Init();
+        boss.Flip(boss.target.transform.position.x, boss.transform.position.x);
     }
 
 
@@ -26,21 +28,28 @@ public class BossIdleState : StateMachineBehaviour
         {
             animator.SetBool("Idle", false);
 
-            //switch (randomPattern)
-            //{
-            //    case 1:
-            //        animator.SetTrigger("Attack");
-            //        break;
-            //    case 2:
-            //        animator.SetBool("JumpAttackReady", true);
-            //        break;
-            //    case 3:
-            //        animator.SetBool("JumpUp", true);
-            //        break;
-            //    case 4:
-            //        animator.SetBool("Run", true);
-            //        break;
-            //}
+            switch (randomPattern)
+            {
+                case 1:
+                    animator.SetTrigger("Attack");
+                    break;
+                case 2:
+                    animator.SetBool("JumpAttackReady", true);
+                    break;
+                case 3:
+                    animator.SetBool("JumpUp", true);
+                    break;
+                case 4:
+                    animator.SetBool("Run", true);
+                    break;
+                case 5:
+                    if(boss.bossHealth <= 500)
+                    {
+                        animator.SetTrigger("AttackRe");
+                        break;
+                    }
+                    break;
+            }
         }
     }
 
@@ -53,10 +62,11 @@ public class BossIdleState : StateMachineBehaviour
     private void Init()
     {
         idleTime = Random.Range(idleMinSec, idleMaxSec);
-        randomPattern = Random.Range(1, 4);
+        randomPattern = Random.Range(1, 5);
         totalElapsedTime = 0f;
         boss.rigid.constraints = RigidbodyConstraints2D.None;
         boss.rigid.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
 
+    
 }

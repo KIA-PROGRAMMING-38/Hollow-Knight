@@ -1481,11 +1481,7 @@ MonoBehaviour:
   bossHealth: 1000
   jumpForce: 50
   moveSpeed: 30
-  pos: {fileID: 0}
-  checkRadious: 0
-  islayer:
-    serializedVersion: 2
-    m_Bits: 0
+  target: {fileID: 626267016}
   material: {fileID: 2100000, guid: f07155ec1f53ca34f91c35f0e45d25a3, type: 2}
 --- !u!95 &385905089
 Animator:

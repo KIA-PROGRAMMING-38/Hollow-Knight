@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -71,12 +70,12 @@ public class BossController : MonoBehaviour
                 anim.SetBool("Run", false);
                 anim.SetTrigger("Stun");
             }
-            if(bossHealth == 0)
+            if(bossHealth <= 0)
             {
                 anim.SetBool("Idle", false);
                 anim.SetBool("JumpUp", false);
                 anim.SetBool("Run", false);
-                anim.SetTrigger("Die");
+                anim.SetTrigger("Dead");
                 gameObject.GetComponent<Collider2D>().enabled = false;
                 rigid.simulated = false;
                 spriteRenderer.sortingOrder = -1;

@@ -62,7 +62,7 @@ public class PlayerController : MonoBehaviour
         jumpTime = 0.5f;
         isSkill = true;
         dashSpeed = 30f;
-        dashTime = 0.5f;
+        dashTime = 0.3f;
     }
 
     void FixedUpdate()

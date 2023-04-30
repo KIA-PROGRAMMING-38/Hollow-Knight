@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,8 +16,8 @@ public class BossController : MonoBehaviour
     public Transform target;
     private BossAttack _bossAttack;
     public UIManager ui;
-    
 
+    public AudioClip aui;
     internal Animator anim;
     internal Rigidbody2D rigid;
     internal SpriteRenderer spriteRenderer;

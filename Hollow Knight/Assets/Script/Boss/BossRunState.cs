@@ -11,7 +11,7 @@ public class BossRunState : StateMachineBehaviour
     {
         boss = animator.GetComponent<BossController>();
         runVelocity.Set(boss.moveSpeed, 0f);
-        if (boss.spriteRenderer.flipX == false)
+        if(boss.transform.localScale.x == 1)
             boss.rigid.velocity = Vector2.left * runVelocity;
         else
             boss.rigid.velocity = Vector2.right * runVelocity;

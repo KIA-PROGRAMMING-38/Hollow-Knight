@@ -11,8 +11,6 @@ public class WanderingHusk : MonsterController
         attackSpeed = 10f;
         attackRange = 7f;
         monsterHealth = 60;
-        hitDamage = 20;
-        
     }
 
     private void Update()

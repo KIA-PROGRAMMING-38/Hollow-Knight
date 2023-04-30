@@ -5,9 +5,13 @@ using UnityEngine;
 public class SlashEffect : MonoBehaviour
 {
     private HitEffect hitEffect;
-    private void Start()
+    private void Awake()
     {
         hitEffect = GetComponentInChildren<HitEffect>();
+    }
+    private void Start()
+    {
+        HideSlashEffect();
     }
     // 공격 이펙트 생성
     public void Show() => gameObject.SetActive(true);

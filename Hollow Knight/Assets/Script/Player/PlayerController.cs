@@ -1,3 +1,4 @@
+using Mono.Cecil.Cil;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,7 +14,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask islayer;
     [SerializeField] private Transform bulletSpawn;
     [SerializeField] private UIManager uiManager;
-    
+    [SerializeField] private Transform bossEnter;
+    [SerializeField] private CameraFollow cam;
+
     private int moveDirection;
 
     internal bool isGround;
@@ -29,7 +32,8 @@ public class PlayerController : MonoBehaviour
     internal float dashTime;
 
     private bool immortal;
-    private int life;
+    private bool isDead;
+    private int life = 5;
 
     private SlashEffect _slashEffect;
     private UpSlashEffect _upSlashEffect;
@@ -54,13 +58,11 @@ public class PlayerController : MonoBehaviour
         _dashEffect = GetComponentInChildren<DashEffect>();
         _damageFirstEffect = GetComponentInChildren<DamageFirstEffect>();
 
-        immortal = true;
+        immortal = false;
         jumpTime = 0.5f;
         isSkill = true;
         dashSpeed = 30f;
         dashTime = 0.5f;
-        life = 5;
-        
     }
 
     void FixedUpdate()
@@ -78,12 +80,12 @@ public class PlayerController : MonoBehaviour
     // 스킬 활성화
     private void SkillActive()
     {
-        if (Input.GetKeyDown(KeyCode.C) && dashCount == 1)
+        if (Input.GetKeyDown(KeyCode.C) && dashCount == 1 && !isDead)
         {
             StartCoroutine(Dash());
         }
 
-        if (Input.GetKeyDown(KeyCode.A) && isSkill)
+        if (Input.GetKeyDown(KeyCode.A) && isSkill && !isDead)
         {
             // 마나 없을 때 스킬 사용 불가
             if (uiManager.mpImage.fillAmount < 0.1f)
@@ -126,6 +128,9 @@ public class PlayerController : MonoBehaviour
         // 대쉬 중 이동을 하지 않는다.
         if (isDash)
             return;
+        // 죽었을 때 이동을 하지 않는다.
+        if (isDead)
+            return;
 
         if (Input.GetKey(KeyCode.LeftArrow) && Input.GetKey(KeyCode.RightArrow))
         {
@@ -158,6 +163,9 @@ public class PlayerController : MonoBehaviour
     {
         // 대쉬 중 점프를 하지 않는다.
         if (isDash)
+            return;
+        // 죽었을 때 점프를 하지 않는다.
+        if (isDead)
             return;
 
         // 지면을 확인
@@ -221,6 +229,17 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+    
+    // 플레이어 죽음
+    IEnumerator PlayerDead()
+    {
+        anim.SetTrigger("Die");
+        isDead = true;
+        yield return new WaitForSeconds(1f);
+        isDead = false;
+        life = 5;
+        uiManager.UpdateLifeIcon(life);
+    }
     IEnumerator Dash()
     {
         float originalGravity = rigid.gravityScale;
@@ -269,7 +288,7 @@ public class PlayerController : MonoBehaviour
     IEnumerator TimeDelay()
     {
         // 무적상태
-        immortal = false;
+        immortal = true;
         anim.SetTrigger("isDamage");
         // 시간 정지
         Time.timeScale = 0f;
@@ -284,15 +303,30 @@ public class PlayerController : MonoBehaviour
         rigid.velocity = Vector2.zero;
         //무적 시간
         yield return new WaitForSeconds(2f);
-        immortal = true;
+        immortal = false;
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.transform.CompareTag("Monster") && immortal)
+        if (collision.transform.CompareTag("Monster") || collision.transform.CompareTag("Boss") && !immortal && !isDead)
         {
             life--;
             uiManager.UpdateLifeIcon(life);
+            if (life == 0)
+            {
+                StartCoroutine(PlayerDead());
+                return;
+            }
             StartCoroutine(TimeDelay());
         }
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Potal"))
+        {
+            transform.position = bossEnter.position;
+            cam.minCamaraRange = new Vector2(-7, -70);
+        }
+    }
+
 }

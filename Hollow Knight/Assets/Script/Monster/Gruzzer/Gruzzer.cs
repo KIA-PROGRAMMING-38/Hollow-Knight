@@ -13,8 +13,6 @@ public class Gruzzer : MonsterController
         attackSpeed = 7f;
         attackRange = 7f;
         monsterHealth = 60;
-        hitDamage = 20;
-        
     }
     private void Update()
     {

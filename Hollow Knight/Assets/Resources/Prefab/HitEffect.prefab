@@ -133,5 +133,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 0}
-  shakeRange: 0.05
+  shakeRange: 0.07
   duration: 0.5

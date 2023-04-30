@@ -14,10 +14,7 @@ public class DashState : StateMachineBehaviour
 
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (Input.GetKeyUp(KeyCode.C))
-        {
-            animator.SetBool("isDash", false);
-        }
+        
     }
 
 

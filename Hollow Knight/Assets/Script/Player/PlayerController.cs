@@ -253,9 +253,12 @@ public class PlayerController : MonoBehaviour
             rigid.velocity = Vector2.left * dashSpeed;
 
         yield return new WaitForSeconds(dashTime);
+        anim.SetBool("isDash", false);
+        anim.SetBool("Idle", true);
         rigid.gravityScale = originalGravity;
         rigid.velocity = Vector2.zero;
         isDash = false;
+        dashCount++;
     }
 
     IEnumerator SkillBullet()
@@ -325,6 +328,7 @@ public class PlayerController : MonoBehaviour
         {
             transform.position = bossEnter.position;
             cam.minCamaraRange = new Vector2(-7, -70);
+            cam.GetComponent<Camera>().orthographicSize = 23;
         }
     }
 

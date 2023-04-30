@@ -6,45 +6,38 @@ using UnityEngine.UI;
 
 public class BossController : MonoBehaviour
 {
-    // 보스가 체력 50이 되면 광폭화 진행
-    // 체력 절반 이 되기 전에는 패턴이 정형화 절반 이하에는 랜덤
-    // 체력 500 이라면 100 마다 스턴 효과
     public int bossHealth;
     public int jumpForce;
     public int moveSpeed;
-    private int playerDamage;
+    private int hitDamage;
+    private int skillDamage;
    
     public Transform target;
     private BossAttack _bossAttack;
-    private UIManager ui;
-    
+    public UIManager ui;
 
+    public AudioClip aui;
     internal Animator anim;
     internal Rigidbody2D rigid;
-    private Material originmaterial;
-    public Material material;
     internal SpriteRenderer spriteRenderer;
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody2D>();
-        material = GetComponent<Material>();
-        ui = GetComponent<UIManager>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         _bossAttack = GetComponentInChildren<BossAttack>();
 
-        playerDamage = 20;
-        originmaterial = spriteRenderer.material;
-        
+        hitDamage = 20;
+        skillDamage = 40;
     }
 
     public void Flip(float target, float boss)
     {
         if (target < boss)
-            spriteRenderer.flipX = false;
+            transform.localScale = new Vector3(1, 1, 1);
         else
-            spriteRenderer.flipX = true;
+            transform.localScale = new Vector3(-1, 1, 1);
     }
 
     //보스 이펙트 생성
@@ -54,30 +47,35 @@ public class BossController : MonoBehaviour
     {
         if (collision.CompareTag("Weapon"))
         {
-            bossHealth -= playerDamage;
-            spriteRenderer.material = material;
+            bossHealth -= hitDamage;
+            spriteRenderer.color = new Color(0.5f, 0.5f, 0.5f, 1);
             ui.AcquisitionMpIcon(0.3f);
+        }
+        if (collision.CompareTag("SkillBullet"))
+        {
+            bossHealth -= skillDamage;
+            spriteRenderer.color = new Color(0.5f, 0.5f, 0.5f, 1);
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Weapon"))
+        if (collision.CompareTag("Weapon") || collision.CompareTag("SkillBullet"))
         {
-            spriteRenderer.material = originmaterial;
-            if(bossHealth == 600 || bossHealth == 500 || bossHealth == 200)
+            spriteRenderer.color = new Color(1, 1, 1, 1);
+            if (bossHealth == 600 || bossHealth == 500 || bossHealth == 200)
             {
                 anim.SetBool("Idle", false);
                 anim.SetBool("JumpUp", false);
                 anim.SetBool("Run", false);
                 anim.SetTrigger("Stun");
             }
-            if(bossHealth == 0)
+            if(bossHealth <= 0)
             {
                 anim.SetBool("Idle", false);
                 anim.SetBool("JumpUp", false);
                 anim.SetBool("Run", false);
-                anim.SetTrigger("Die");
+                anim.SetTrigger("Dead");
                 gameObject.GetComponent<Collider2D>().enabled = false;
                 rigid.simulated = false;
                 spriteRenderer.sortingOrder = -1;

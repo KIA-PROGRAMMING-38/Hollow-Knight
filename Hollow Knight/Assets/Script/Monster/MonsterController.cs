@@ -1,8 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
+
 
 public class MonsterController : MonoBehaviour
 {
@@ -12,7 +11,9 @@ public class MonsterController : MonoBehaviour
     internal float attackCoolTime;
     internal float attackRange;
     internal int monsterHealth;
-    internal int hitDamage;
+    private int hitDamage;
+    private int skillDamage;
+    
 
     public Transform target;
     public Transform[] patrolPoints;
@@ -27,7 +28,9 @@ public class MonsterController : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         rigid = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
-       
+
+        hitDamage = 20;
+        skillDamage = 40;
     }
 
     public void Flip(float target, float obj)
@@ -37,9 +40,8 @@ public class MonsterController : MonoBehaviour
         else
             spriteRenderer.flipX = true;
     }
-    private void Damage(int damage)
+    private void SlashDamage(int damage)
     {
-        int dir = transform.position.x - target.position.x > 0 ? 1 : -1;
         monsterHealth -= damage;
         Flip(target.position.x, transform.position.x);
         //피격시 넉백
@@ -48,14 +50,20 @@ public class MonsterController : MonoBehaviour
         else
             rigid.velocity = Vector2.left * 10f;
     }
+    private void SkillDamage(int damage) => monsterHealth -= damage;
+    
     public void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Weapon"))
         {
             //데미지를 입었을 때
-            Damage(hitDamage);
+            SlashDamage(hitDamage);
         }
-        
+
+        if (collision.CompareTag("SkillBullet"))
+        {
+            SkillDamage(skillDamage);
+        }
     }
     public void AttackSpeed()
     {
@@ -66,10 +74,10 @@ public class MonsterController : MonoBehaviour
     }
     public void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Weapon"))
+        if (collision.CompareTag("Weapon") || collision.CompareTag("SkillBullet"))
         {
             //처치 되었을 때
-            if (monsterHealth == 0)
+            if (monsterHealth <= 0)
             {
                 anim.SetTrigger("Die");
                 col.enabled = false;

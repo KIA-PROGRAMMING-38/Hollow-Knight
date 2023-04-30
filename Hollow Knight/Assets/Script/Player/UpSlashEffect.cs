@@ -8,6 +8,7 @@ public class UpSlashEffect : MonoBehaviour
     private void Start()
     {
         hitEffect = GetComponentInChildren<HitEffect>();
+        HideUpSlashEffect();
     }
     // 위로 공격 이펙트 생성
     public void Show() => gameObject.SetActive(true);

@@ -7,6 +7,9 @@ TagManager:
   - Weapon
   - Monster
   - Ground
+  - SkillBullet
+  - Potal
+  - Boss
   layers:
   - Default
   - TransparentFX

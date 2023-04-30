@@ -8,6 +8,7 @@ public class DownSlashEffect : MonoBehaviour
     private void Start()
     {
         hitEffect = GetComponentInChildren<HitEffect>();
+        HideDownSlashEffect();
     }
     public void Show() => gameObject.SetActive(true);
     private void HideDownSlashEffect() => gameObject.SetActive(false);

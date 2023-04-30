@@ -8,6 +8,7 @@ public class DamageFirstEffect : MonoBehaviour
     void Start()
     {
         damageEffect = GetComponentInChildren<DamageEffect>();
+        HideDamageEffect();
     }
 
     public void Show() => gameObject.SetActive(true);

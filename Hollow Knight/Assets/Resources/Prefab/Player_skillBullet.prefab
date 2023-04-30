@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -1674748023592586627}
   m_Layer: 0
   m_Name: Player_skillBullet
-  m_TagString: Untagged
+  m_TagString: SkillBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
